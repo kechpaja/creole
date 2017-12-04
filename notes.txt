@@ -1,0 +1,180 @@
+ - Basics
+
+So, the basic idea is this: in a regular chat client, you have to worry about
+staying on topic, because the discussion happens in a single chat window.
+However, it seems like it would be easier to handle multi-threaded discussions
+if you could have multiple windows open with the same people, each dedicated
+to a separate thread in the conversation. 
+
+For this implementation, which will be intentionally basic, there won't be
+many crazy features other than that one. A chat window will be exactly that
+--- a place to which every participant can write text, and possibly add other
+types of media later on if we decide it is necessary. There will be simple
+keyboard shortcuts for switching from one open window to another, and probably
+a larger "chat frame" encompassing a single discussion group or grander
+"conversation", in which there can be many chat windows. 
+
+Chat windows are designed to be created in an ad-hoc fashion, and then
+discarded when the discussions that they are used for are over. Of course,
+"discarded" just means "abandoned", they won't be deleted unless the user
+actually chooses to do so. They can be re-activated at any time, although the
+screen that the user sees can only hold so many windows, and will probably be
+limited to the N most recently active chats, for some user-definable value of
+N. There will also need to be a way to easily "cite" old chats, so that those
+conversations need not be re-had. 
+
+Probably going to have the list of non-foreground chats on the left-hand side
+of the screen, and list of larger frames (call them "conversations") as tabs
+across the top. Perhaps allow this to be configured. 
+
+
+ - Protocol
+
+Probably no point in having a separate connection for each chat, although that
+might be necessary in the future. Do more research on what the best setup for
+that sort of thing is. 
+
+More realistically, each chat should have a unique ID, probably derived from
+some combination of the conversation ID, user ID of the user who started the
+new thread, and some monotonically increasing value (either a per-user
+counter, or the current time). Conversation ID's will probably be derived from
+the user ID of the user who started them, and again some monotonically
+increasing value, which may be the creation timestamp, but more likely will
+also include a value assigned by the server. 
+
+At any rate, when a message is posted to a thread in a conversation, the
+message will be tagged with the ID discussed above, and sent to all other
+users in that thread (which will not necessarily be all users in the
+conversation). The recipient's client will be able to determine which
+conversation and thread to add the received message to, given that
+information. 
+
+We *probably* don't need to explicitly mark new threads, since they can be
+ID'ed as those threads with unrecognized ID's, but perhaps it wouldn't hurt to
+have a "new thread" message that would be sent when the thread was opened.
+Don't send it until there has been a message, though. 
+
+
+ -- User Accounts
+
+These live on a server. If you're talking to a user on the same server, all
+you need is their username (there will need to be a way to specify talking to
+localhost). There can be as many servers as necessary, and they need not all
+talk to one another. 
+
+If you're talking to someone on another server, it gets a little more
+complicated. If you know the server's address, you can just connect and send
+them a message. However, if you don't, there should be a way for a mutual
+friend to connect the two of you without revealing either individual's user ID
+to the other. That will probably be something to think about later, though.
+It's not a core feature.
+
+
+ -- User Actions
+
+ --- Opening a New Thread in the Same Conversation
+
+There are three options here: open a new thread with all users in the
+conversation, open a new thread with the same set of users as are in the
+currently-focused thread, and open a new thread with users that you hand-pick.
+Each one will get a keyboard shortcut; hand-picking users will probably open a
+user-selection menu where the new conversation will be, or perhaps open an
+empty conversation and then you have to add users via the conventional add
+command. 
+
+Perhaps /thread for a new global thread, /duplicate for a new thread with same
+users as current focused thread, and /empty for a new empty thread that you 
+have to add users to. Default keyboard shortcuts would be CTRL-T, CTRL-D and
+CTRL-E. A thread can be marked as private before additional users are added,
+and possibly later if all users consent. 
+
+ --- Opening a New Conversation
+
+We will need a keyboard shortcut for this as well, although it's not as common
+an action. When you open a new conversation, it probably doesn't contain any
+threads at all, but you can invite users to it and there will probably be
+global properties that can be set (name at least, and probably a field for
+pinned links and such. Perhaps a pinned thread.
+
+This will probably be keyed to the command /convo or /conversation. There
+likely won't be a default shortcut for it, since it doesn't happen all that
+often. Alternatively, use the shortcut for switching conversations (probably
+CTRL-S or something like that) and then hit "+". 
+
+ --- Switching Between Threads and Conversations
+
+Swiching between threads will probably be tied to CTRL plus the arrow keys by
+default, although there may eventually be room for customization. Switching
+conversations, on the other hand, will by default require the user to press a
+key combination (probably CTRL-S or something like that) to switch focus to
+the tab bar with the conversation headers, at which point they can use the
+arrow keys to navigate. Enter will bring them back into the selected
+conversation. 
+
+ --- Adding a User to a Thread or Conversation
+
+You can add a user to a thread with /add or CTRL-A (which opens a menu of
+users who can be added). To add a user to the conversation, you would either
+run this command with the entire conversation focused (if that's possible), or
+focus the list of users and press "+". You can probably focus the whole
+conversation with CTRL-C. But more on this later. 
+
+
+ --- An Alternative Way of Doing User Actions
+
+Alternatively, we can just let the user jump back to the conversation level
+with ESC or another self-bound key, and then use the arrow keys to move
+around. They can then press keys to add users and stuff like that. Per-thread
+actions would be accomplished with traditional / commands. 
+
+We also probably don't need private threads, since the user can just start
+another conversation with a smaller group of users. You shouldn't be doing
+everything in one conversation if you have a large group. On the other hand,
+there are uses for them. There is also a difference between a private thread
+and a thread that you're not participating in. 
+
+It may be best to have threads always created without members unless they are
+cloned, so that people don't default to including everyone. Threads cloned
+from private threads are also private. 
+
+There can also be multiple levels of escaping; you can escape all the way back
+up to the top level to switch conversations. 
+
+
+When you are in the thread area, you always have one thread selected, and
+that's the one that will be affected if you type. You can use / commands to
+add users and to clone the thread if you want. Cloning is probably not the
+same as creating a new thread with the same people in it. Mentions as well,
+etc. Hit ESC to jump up a level; you can also switch to adjacent threads with
+CTRL and the arrow keys. 
+
+When you're in the thread list, you can select a thread to revive with the
+arrow keys and then hit enter to revive it. This will take you to the thread
+area with that thread revived and focused. There will also be an option to
+delete old threads, but that will be subject to various conditions (perhaps it
+only works if you created that thread, or it just deletes it for you). 
+
+When you're in the user list, you can add a user with "+" or probably also
+"a", and possibly remove them with "-" if you have that privilege. You can
+also scroll through the list of users with the up and down arrow keys, and and
+open a thread with a user. 
+
+When you're in the conversation, you have one of three areas focused: the
+thread area, the user list, and the thread list. Hitting "enter" in the thread
+area drops you into it, and you end up with the conversation focused that you
+had focused when last you were there, or a default if this is your first time.
+If you hit enter in the user or thread list, you're dropped into it and can
+select a thread to revive or a user to start a thread with. You can probably
+also start a private thread or regular thread from here, regardless of which
+area you have focused. 
+
+Finally, you can ESC up one more level, at which point you can use the arrow
+keys to switch between conversations. Press "enter" to select one. You can
+also start a new conversation by pressing "+". 
+
+
+ --- Ignoring a Thread
+
+This is the main way to get rid of an annoying user. You can probably also
+kick them out; haven't thought about that just yet. Perhaps cloning includes a
+link to the state of the convo when it was forked. 
