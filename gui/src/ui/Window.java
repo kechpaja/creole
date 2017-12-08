@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import resources.Strings;
+
 public class Window extends JFrame implements ActionListener {
 	
 	/**
@@ -24,7 +26,7 @@ public class Window extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// Handle setting up the "New Conversation" button TODO localize
-		JButton newConversationButton = new JButton("New Conversation");
+		JButton newConversationButton = new JButton(Strings.getNewConversationButtonText());
 		newConversationButton.addActionListener(this);
 		newConversationButton.setActionCommand("new conversation");
 		
@@ -54,6 +56,7 @@ public class Window extends JFrame implements ActionListener {
 	
 
 	public static void main(String[] args) {
+		Strings.setLocalizationLanguage("epo"); // TODO read this from config file somewhere
 		
 		Window window = new Window();
 		window.init();

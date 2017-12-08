@@ -9,6 +9,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import resources.Strings;
+
 public class ThreadList extends JPanel implements ActionListener {
 
 	/**
@@ -23,8 +25,8 @@ public class ThreadList extends JPanel implements ActionListener {
 		this.parent_ = conversation;
 		this.threads_ = new ArrayList<Thread>();
 		
-		// Set up New Thread button (TODO localize)
-		JButton newThreadButton = new JButton("New Thread");
+		// Set up New Thread button
+		JButton newThreadButton = new JButton(Strings.getNewThreadButtonText());
 		newThreadButton.addActionListener(this);
 		newThreadButton.setActionCommand("new thread");
 		this.add(newThreadButton);

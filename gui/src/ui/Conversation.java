@@ -3,6 +3,8 @@ package ui;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import resources.Strings;
+
 public class Conversation extends JPanel {
 	
 	/**
@@ -18,8 +20,7 @@ public class Conversation extends JPanel {
 	private UserList userList_;
 	
 	protected Conversation() {
-		// TODO localize this
-		title_ = "Conversation " + (count_++);
+		title_ = Strings.getDefaultConversationTitle(count_++);
 		
 		this.threadList_ = new ThreadList(this);
 		this.chatArea_ = new ChatArea();

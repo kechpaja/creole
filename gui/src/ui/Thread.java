@@ -9,6 +9,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import resources.Strings;
+
 public class Thread extends JPanel implements KeyListener {
 	
 	/**
@@ -21,8 +23,7 @@ public class Thread extends JPanel implements KeyListener {
 	private JTextArea typingArea_;
 	
 	protected Thread() {
-		// TODO get the title from some better place
-		this.title_ = "Thread " + (count_++);
+		this.title_ = Strings.getDefaultThreadTitle(count_++);
 		
 		
 		// TODO text area with convo; typing area for typing
@@ -56,6 +57,7 @@ public class Thread extends JPanel implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			// TODO Don't loc this, change it. 
 			this.chatArea_.append("username: " + this.typingArea_.getText() + "\n");
 		}
 	}
