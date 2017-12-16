@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import resources.Strings;
@@ -29,21 +30,25 @@ public class Thread extends JPanel implements KeyListener {
 		// TODO text area with convo; typing area for typing
 		// TODO advanced: user list; clone button
 		
-		this.chatArea_ = new JTextArea(5, 10);
+		this.chatArea_ = new JTextArea(5, 3);
 		this.chatArea_.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));// TODO tweak color and thickness?
 		this.chatArea_.setEditable(false);
-		this.add(this.chatArea_);
+		this.chatArea_.setLineWrap(true);
+		this.chatArea_.setWrapStyleWord(true);
+		this.add(new JScrollPane(this.chatArea_));
 		
-		this.typingArea_ = new JTextArea(5, 10); 
+		this.typingArea_ = new JTextArea(5, 3); 
 		this.typingArea_.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));// TODO tweak color and thickness?
 		this.typingArea_.setEditable(true);
+		this.typingArea_.setLineWrap(true);
+		this.typingArea_.setWrapStyleWord(true);
 		this.typingArea_.addKeyListener(this);
-		this.add(this.typingArea_);
+		this.add(new JScrollPane(this.typingArea_));
 		
 		
-		// TODO probably need to set a layout as well
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(true);
+		this.validate();
 	}
 	
 	

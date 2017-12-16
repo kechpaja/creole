@@ -1,6 +1,7 @@
 package ui;
 
-import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 
 import resources.Strings;
@@ -25,14 +26,15 @@ public class Conversation extends JPanel {
 		this.threadList_ = new ThreadList(this);
 		this.chatArea_ = new ChatArea();
 		this.userList_ = new UserList();
+
+		this.setLayout(new BorderLayout());
 		
-		this.add(this.threadList_);
-		this.add(this.chatArea_);
-		this.add(this.userList_);
+		this.add(this.threadList_, BorderLayout.LINE_START);
+		this.add(this.chatArea_, BorderLayout.CENTER);
+		this.add(this.userList_, BorderLayout.LINE_END);
 		
-		
-		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		this.setOpaque(true);
+		this.validate();
 	}
 
 	

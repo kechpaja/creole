@@ -1,12 +1,10 @@
 package ui;
 
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 public class ChatArea extends JPanel {
@@ -57,31 +55,23 @@ public class ChatArea extends JPanel {
 		int numThreads = this.threads_.size();
 		int numCols = numThreads < this.maxCols_ ? numThreads : this.maxCols_;
 		
-		List<JPanel> panels = new LinkedList<JPanel>();
-		for (int i = 0; i < numCols; i++) {
-			panels.add(new JPanel());
-		}
-		
-		Iterator<Thread> it = this.threads_.iterator();
-		while (it.hasNext()) {
-			for (JPanel panel : panels) {
-				panel.add(it.next());
-				
-				if (!it.hasNext()) {
-					break;
-				}
-			}
-		}
-		
 		this.removeAll();
+		this.setLayout(new GridBagLayout());
 		
-		for (JPanel panel : panels) {
-			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-			panel.setOpaque(true);
-			this.add(panel);
+		int i = 0;
+		for (Thread thread : this.threads_) {
+			GridBagConstraints c = new GridBagConstraints();
+			
+			c.fill = GridBagConstraints.BOTH;
+			c.gridx = i % numCols;
+			c.gridy = i / numCols;
+			c.weightx = 0.5;
+			c.weighty = 0.5;
+			
+			this.add(thread, c);
+			i++;
 		}
 		
-		this.setLayout(new GridLayout(1, numCols));
 		this.validate();
 	}
 
