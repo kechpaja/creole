@@ -15,13 +15,13 @@ public class ChatArea extends JPanel {
 	 */
 	private static final long serialVersionUID = -5349808453529387897L;
 	private Conversation parent_;
-	private List<Thread> threadsDisplayed_;
+	private List<Chat> threadsDisplayed_;
 	private int maxCols_;
 	private int maxRows_;
 	
 	protected ChatArea(Conversation parent) {
 		this.parent_ = parent;
-		this.threadsDisplayed_ = new ArrayList<Thread>();
+		this.threadsDisplayed_ = new ArrayList<Chat>();
 		this.maxCols_ = 3; // TODO set from config file
 		this.maxRows_ = 2; // TODO set from config file
 		
@@ -35,15 +35,15 @@ public class ChatArea extends JPanel {
 		int maxThreads = this.maxCols_ * this.maxRows_;
 		
 		// Figure out which threads need to be added and which are already displayed
-		List<Thread> threadsToAdd = new ArrayList<Thread>();
-		List<Thread> threadsToLeaveBe = new ArrayList<Thread>();
-		Iterator<Thread> it = this.parent_.getThreads().iterator();
+		List<Chat> threadsToAdd = new ArrayList<Chat>();
+		List<Chat> threadsToLeaveBe = new ArrayList<Chat>();
+		Iterator<Chat> it = this.parent_.getThreads().iterator();
 		for (int i = 0; i < maxThreads; i++) {
 			if (!it.hasNext()) {
 				break;
 			}
 			
-			Thread thread = it.next();
+			Chat thread = it.next();
 			if (this.threadsDisplayed_.contains(thread)) {
 				threadsToLeaveBe.add(thread);
 			} else {
@@ -69,7 +69,7 @@ public class ChatArea extends JPanel {
 		this.setLayout(new GridBagLayout());
 		
 		int i = 0;
-		for (Thread thread : this.threadsDisplayed_) {
+		for (Chat thread : this.threadsDisplayed_) {
 			GridBagConstraints c = new GridBagConstraints();
 			
 			c.fill = GridBagConstraints.BOTH;

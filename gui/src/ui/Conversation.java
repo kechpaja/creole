@@ -20,7 +20,7 @@ public class Conversation extends JPanel {
 	private String title_;
 	private String id_;
 	
-	private ThreadList threadList_;
+	private ChatList threadList_;
 	private ChatArea chatArea_;
 	private UserList userList_;
 	
@@ -31,7 +31,7 @@ public class Conversation extends JPanel {
 		this.id_ = System.currentTimeMillis() + "-" + Conversation.count_;
 		this.sender_ = sender;
 		
-		this.threadList_ = new ThreadList(this);
+		this.threadList_ = new ChatList(this);
 		this.chatArea_ = new ChatArea(this);
 		this.userList_ = new UserList();
 
@@ -59,7 +59,7 @@ public class Conversation extends JPanel {
 		this.chatArea_.redisplay();
 	}
 	
-	protected InsertionSortList<Thread> getThreads() {
+	protected InsertionSortList<Chat> getThreads() {
 		return this.threadList_.getThreads();
 	}
 	

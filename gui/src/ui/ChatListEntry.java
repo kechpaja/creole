@@ -6,15 +6,15 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JTextField;
 
-public class ThreadListEntry extends JTextField implements MouseListener {
+public class ChatListEntry extends JTextField implements MouseListener {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1255988995929741748L;
-	private Thread thread_; 
+	private Chat thread_; 
 	
-	protected ThreadListEntry(Thread thread) {
+	protected ChatListEntry(Chat thread) {
 		this.thread_ = thread;
 		
 		this.setText(this.thread_.getTitle());

@@ -19,7 +19,7 @@ import backend.Message;
 import resources.Strings;
 import utils.InsertionSortList;
 
-public class Thread extends JPanel implements KeyListener, FocusListener, Comparable<Thread> {
+public class Chat extends JPanel implements KeyListener, FocusListener, Comparable<Chat> {
 	
 	/**
 	 * 
@@ -29,8 +29,8 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 	private JTextField titleField_;
 	private JTextArea chatArea_;
 	private JTextArea typingArea_;
-	private ThreadListEntry listEntry_;
-	private ThreadList threadList_;
+	private ChatListEntry listEntry_;
+	private ChatList threadList_;
 	private String id_;
 	private long timeOfLastActivity_; // Time of last activity, in milliseconds
 	private List<String> usersInThread_;
@@ -38,8 +38,8 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 	// List of messages to be displayed
 	private InsertionSortList<Message> messages_;
 	
-	protected Thread(ThreadList threadList) {
-		this.id_ = System.currentTimeMillis() + "-" + Thread.count_++; // TODO work in user ID?
+	protected Chat(ChatList threadList) {
+		this.id_ = System.currentTimeMillis() + "-" + Chat.count_++; // TODO work in user ID?
 		this.messages_ = new InsertionSortList<Message>();
 		this.threadList_ = threadList;
 		
@@ -52,7 +52,7 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 
 		this.setLayout(new BorderLayout());
 		
-		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(Thread.count_));
+		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(Chat.count_));
 		this.titleField_.setEditable(false);
 		this.titleField_.addFocusListener(this);
 		this.add(this.titleField_, BorderLayout.PAGE_START);
@@ -78,7 +78,7 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 
-		this.listEntry_ = new ThreadListEntry(this); // Depends on title field being set
+		this.listEntry_ = new ChatListEntry(this); // Depends on title field being set
 		
 		// Listeners
 		this.addFocusListener(this);
@@ -146,7 +146,7 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 	
 	
 	@Override
-	public int compareTo(Thread thread) {
+	public int compareTo(Chat thread) {
 		// Can't just subtract, because that would mean having to safely cast a long to int. 
 		if (this.isFocusOwner() || thread.timeOfLastActivity_ < this.timeOfLastActivity_) {
 			return -1;
@@ -161,7 +161,7 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 		return this.titleField_.getText();
 	}
 	
-	protected ThreadListEntry getListEntry() {
+	protected ChatListEntry getListEntry() {
 		return this.listEntry_;
 	}
 	
