@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -15,7 +17,7 @@ import backend.Message;
 import resources.Strings;
 import utils.InsertionSortList;
 
-public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
+public class Thread extends JPanel implements KeyListener, FocusListener, Comparable<Thread> {
 	
 	/**
 	 * 
@@ -25,6 +27,7 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 	private JTextField titleField_;
 	private JTextArea chatArea_;
 	private JTextArea typingArea_;
+	private ThreadListEntry listEntry_;
 	private long timeOfLastActivity_; // Time of last activity, in milliseconds
 	
 	// List of messages to be displayed
@@ -41,12 +44,14 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 		
 		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(count_++));
 		this.titleField_.setEditable(false);
+		this.titleField_.addFocusListener(this);
 		this.add(this.titleField_, BorderLayout.PAGE_START);
 		
 		this.chatArea_ = new JTextArea(5, 3);
 		this.chatArea_.setEditable(false);
 		this.chatArea_.setLineWrap(true);
 		this.chatArea_.setWrapStyleWord(true);
+		this.chatArea_.addFocusListener(this);
 		JScrollPane chatAreaScrollPane = new JScrollPane(this.chatArea_);
 		chatAreaScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
 		this.add(chatAreaScrollPane, BorderLayout.CENTER);
@@ -56,11 +61,17 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 		this.typingArea_.setLineWrap(true);
 		this.typingArea_.setWrapStyleWord(true);
 		this.typingArea_.addKeyListener(this);
+		this.typingArea_.addFocusListener(this);
 		JScrollPane typingAreaScrollPane = new JScrollPane(this.typingArea_);
 		typingAreaScrollPane.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Color.BLUE));
 		this.add(typingAreaScrollPane, BorderLayout.PAGE_END);
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+
+		this.listEntry_ = new ThreadListEntry(this); // Depends on title field being set
+		
+		// Listeners
+		this.addFocusListener(this);
 		
 		this.setOpaque(true);
 		this.validate();
@@ -69,10 +80,13 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 		this.redisplay();
 	}
 	
+	
+	/*
+	 * Key Listener Methods
+	 */
+	
 	@Override
-	public void keyReleased(KeyEvent e) {
-		//  Do nothing
-	}
+	public void keyReleased(KeyEvent e) { /* Do nothing */ }
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -104,9 +118,29 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// Do nothing
+	public void keyTyped(KeyEvent e) { /* Do nothing */ }
+	
+	
+	/*
+	 * Focus Listener methods
+	 */
+	
+	@Override
+	public void focusGained(FocusEvent arg0) {
+		this.listEntry_.setHighlighted(true);
+		this.setBorder(BorderFactory.createLineBorder(Color.CYAN, 5));
+		this.validate();
+		this.updateTimeOfLastActivity();
 	}
+
+
+	@Override
+	public void focusLost(FocusEvent arg0) {
+		this.listEntry_.setHighlighted(false);
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+		this.validate();
+	}
+	
 	
 	@Override
 	public int compareTo(Thread thread) {
@@ -122,6 +156,10 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 	
 	protected String getTitle() {
 		return this.titleField_.getText();
+	}
+	
+	protected ThreadListEntry getListEntry() {
+		return this.listEntry_;
 	}
 	
 	protected void redisplay() {

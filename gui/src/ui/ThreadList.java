@@ -9,7 +9,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import resources.Strings;
 import utils.InsertionSortList;
@@ -70,7 +69,7 @@ public class ThreadList extends JPanel implements ActionListener {
 			c.gridx = 0;
 			c.weightx = 1.0;
 			
-			this.threadListPanel_.add(new JTextField(thread.getTitle()), c);
+			this.threadListPanel_.add(thread.getListEntry(), c);
 		}
 		
 		this.validate();
