@@ -43,8 +43,12 @@ public class Conversation extends JPanel {
 	}
 	
 	protected void addThread(Thread thread) {
-		this.chatArea_.addThread(thread);
 		this.threadList_.addThread(thread);
+		this.focusThread(thread);
+	}
+	
+	protected void focusThread(Thread thread) {
+		this.chatArea_.addThread(thread);
 	}
 	
 }

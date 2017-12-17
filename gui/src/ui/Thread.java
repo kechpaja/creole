@@ -3,6 +3,7 @@ package ui;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -10,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import backend.Message;
 import resources.Strings;
 
 public class Thread extends JPanel implements KeyListener {
@@ -24,11 +26,16 @@ public class Thread extends JPanel implements KeyListener {
 	private JTextArea typingArea_;
 	private long timeOfLastActivity_; // Time of last activity, in milliseconds
 	
+	// List of messages to be displayed
+	private PriorityBlockingQueue<Message> messages_;
+	
 	protected Thread() {
 		this.title_ = Strings.getDefaultThreadTitle(count_++);
+		this.messages_ = new PriorityBlockingQueue<Message>();
 		
 		// TODO advanced: user list; clone button
 		// TODO actually show the title somewhere
+		// TODO change border color based on whether user has focused window since new messages arrived. 
 		
 		this.chatArea_ = new JTextArea(5, 3);
 		this.chatArea_.setEditable(false);
@@ -54,6 +61,7 @@ public class Thread extends JPanel implements KeyListener {
 		this.validate();
 		
 		this.updateTimeOfLastActivity();
+		this.displayChatHistory();
 	}
 	
 	@Override
@@ -68,9 +76,19 @@ public class Thread extends JPanel implements KeyListener {
 				this.typingArea_.append("\n");
 			} else {
 				if (!this.typingArea_.getText().equals("")) {
-					// TODO Don't loc this, change it. 
-					this.chatArea_.append("username: " + this.typingArea_.getText() + "\n");
+					// TODO Get username of this user
+					Message message = new Message(this.typingArea_.getText(), "me");
 					this.typingArea_.setText("");
+					
+					this.messages_.add(message);
+					
+					// TODO send that message on to networking backend as well
+					
+					// TODO what we should really be doing is sending a message object to something in the backend,
+					// and then call the backend for the new list of messages to redisplay in this thread. The thread
+					// object here should have an "update" method that just fetches from there. 
+					
+					this.displayChatHistory();
 				}
 				
 				e.consume();
@@ -95,5 +113,15 @@ public class Thread extends JPanel implements KeyListener {
 	
 	private void updateTimeOfLastActivity() {
 		this.timeOfLastActivity_ = System.currentTimeMillis();
+	}
+	
+	private void displayChatHistory() {
+		String chatAreaContents = "";
+		
+		for (Message message : this.messages_) {
+			chatAreaContents += message.getSendingUser() + ": " + message.getContent() + "\n";
+		}
+		
+		this.chatArea_.setText(chatAreaContents);
 	}
 }
