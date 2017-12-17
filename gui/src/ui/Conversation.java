@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import javax.swing.JPanel;
 
@@ -24,7 +25,7 @@ public class Conversation extends JPanel {
 		title_ = Strings.getDefaultConversationTitle(count_++);
 		
 		this.threadList_ = new ThreadList(this);
-		this.chatArea_ = new ChatArea();
+		this.chatArea_ = new ChatArea(this);
 		this.userList_ = new UserList();
 
 		this.setLayout(new BorderLayout());
@@ -42,13 +43,12 @@ public class Conversation extends JPanel {
 		return this.title_;
 	}
 	
-	protected void addThread(Thread thread) {
-		this.threadList_.addThread(thread);
-		this.focusThread(thread);
+	protected void redisplay() {
+		this.threadList_.redisplay();
+		this.chatArea_.redisplay();
 	}
 	
-	protected void focusThread(Thread thread) {
-		this.chatArea_.addThread(thread);
+	protected PriorityBlockingQueue<Thread> getThreads() {
+		return this.threadList_.getThreads();
 	}
-	
 }

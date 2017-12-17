@@ -14,7 +14,7 @@ import javax.swing.JTextArea;
 import backend.Message;
 import resources.Strings;
 
-public class Thread extends JPanel implements KeyListener {
+public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 	
 	/**
 	 * 
@@ -61,7 +61,7 @@ public class Thread extends JPanel implements KeyListener {
 		this.validate();
 		
 		this.updateTimeOfLastActivity();
-		this.displayChatHistory();
+		this.redisplay();
 	}
 	
 	@Override
@@ -88,7 +88,7 @@ public class Thread extends JPanel implements KeyListener {
 					// and then call the backend for the new list of messages to redisplay in this thread. The thread
 					// object here should have an "update" method that just fetches from there. 
 					
-					this.displayChatHistory();
+					this.redisplay();
 				}
 				
 				e.consume();
@@ -103,19 +103,23 @@ public class Thread extends JPanel implements KeyListener {
 		// Do nothing
 	}
 	
+	@Override
+	public int compareTo(Thread thread) {
+		// Can't just subtract, because that would mean having to safely cast a long to int. 
+		if (this.isFocusOwner() || thread.timeOfLastActivity_ < this.timeOfLastActivity_) {
+			return -1;
+		} else if (thread.isFocusOwner() || thread.timeOfLastActivity_ > this.timeOfLastActivity_) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	
 	protected String getTitle() {
 		return this.title_;
 	}
 	
-	protected long timeSinceLastActivity() {
-		return (System.currentTimeMillis() - this.timeOfLastActivity_);
-	}
-	
-	private void updateTimeOfLastActivity() {
-		this.timeOfLastActivity_ = System.currentTimeMillis();
-	}
-	
-	private void displayChatHistory() {
+	protected void redisplay() {
 		String chatAreaContents = "";
 		
 		for (Message message : this.messages_) {
@@ -123,5 +127,9 @@ public class Thread extends JPanel implements KeyListener {
 		}
 		
 		this.chatArea_.setText(chatAreaContents);
+	}
+	
+	private void updateTimeOfLastActivity() {
+		this.timeOfLastActivity_ = System.currentTimeMillis();
 	}
 }

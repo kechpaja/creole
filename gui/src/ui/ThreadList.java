@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,11 +20,11 @@ public class ThreadList extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 8408968042626016488L;
 	
 	private Conversation parent_;
-	private List<Thread> threads_; // TODO replace with priority queue
+	private PriorityBlockingQueue<Thread> threads_; // TODO replace with priority queue
 	
 	protected ThreadList(Conversation conversation) {
 		this.parent_ = conversation;
-		this.threads_ = new ArrayList<Thread>();
+		this.threads_ = new PriorityBlockingQueue<Thread>();
 		
 		// Set up New Thread button
 		JButton newThreadButton = new JButton(Strings.getNewThreadButtonText());
@@ -39,16 +40,21 @@ public class ThreadList extends JPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("new thread")) {
-			this.parent_.addThread(new Thread());
+			this.threads_.add(new Thread());
+			this.parent_.redisplay();
 		}
 	}
 	
 	protected void addThread(Thread thread) {
-		this.threads_.add(0, thread);
-		this.redisplayThreads();
+		this.threads_.add(thread);
+		this.redisplay();
 	}
 	
-	private void redisplayThreads() {
+	protected PriorityBlockingQueue<Thread> getThreads() {
+		return this.threads_;
+	}
+	
+	protected void redisplay() {
 		for (Thread thread : this.threads_) {
 			// TODO maybe a JScrollPane? 
 		}
