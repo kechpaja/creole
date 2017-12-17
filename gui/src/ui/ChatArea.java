@@ -2,6 +2,9 @@ package ui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -12,11 +15,13 @@ public class ChatArea extends JPanel {
 	 */
 	private static final long serialVersionUID = -5349808453529387897L;
 	private Conversation parent_;
+	private List<Thread> threadsDisplayed_;
 	private int maxCols_;
 	private int maxRows_;
 	
 	protected ChatArea(Conversation parent) {
 		this.parent_ = parent;
+		this.threadsDisplayed_ = new ArrayList<Thread>();
 		this.maxCols_ = 3; // TODO set from config file
 		this.maxRows_ = 2; // TODO set from config file
 		
@@ -29,11 +34,42 @@ public class ChatArea extends JPanel {
 		int numCols = numThreads < this.maxCols_ ? numThreads : this.maxCols_;
 		int maxThreads = this.maxCols_ * this.maxRows_;
 		
+		// Figure out which threads need to be added and which are already displayed
+		List<Thread> threadsToAdd = new ArrayList<Thread>();
+		List<Thread> threadsToLeaveBe = new ArrayList<Thread>();
+		Iterator<Thread> it = this.parent_.getThreads().iterator();
+		for (int i = 0; i < maxThreads; i++) {
+			if (!it.hasNext()) {
+				break;
+			}
+			
+			Thread thread = it.next();
+			if (this.threadsDisplayed_.contains(thread)) {
+				threadsToLeaveBe.add(thread);
+			} else {
+				threadsToAdd.add(thread);
+			}
+		}
+		
+		// Replace ones which need to be swapped out
+		for (int i = 0; i < maxThreads; i++) {
+			if (threadsToAdd.size() <= 0) {
+				break;
+			}
+			
+			if (i >= this.threadsDisplayed_.size()) {
+				this.threadsDisplayed_.add(threadsToAdd.remove(0));
+			} else if (!threadsToLeaveBe.contains(this.threadsDisplayed_.get(i))) {
+				this.threadsDisplayed_.set(i, threadsToAdd.remove(0));
+			}
+		}
+		
+		// Redisplay
 		this.removeAll();
 		this.setLayout(new GridBagLayout());
 		
 		int i = 0;
-		for (Thread thread : this.parent_.getThreads()) {
+		for (Thread thread : this.threadsDisplayed_) {
 			GridBagConstraints c = new GridBagConstraints();
 			
 			c.fill = GridBagConstraints.BOTH;
