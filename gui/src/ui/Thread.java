@@ -6,6 +6,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -31,6 +33,7 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 	private ThreadList threadList_;
 	private String id_;
 	private long timeOfLastActivity_; // Time of last activity, in milliseconds
+	private List<String> usersInThread_;
 	
 	// List of messages to be displayed
 	private InsertionSortList<Message> messages_;
@@ -39,6 +42,9 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 		this.id_ = System.currentTimeMillis() + "-" + Thread.count_++; // TODO work in user ID?
 		this.messages_ = new InsertionSortList<Message>();
 		this.threadList_ = threadList;
+		
+		// TODO actually add users to user list
+		this.usersInThread_ = new ArrayList<String>();
 		
 		// TODO advanced: user list; clone button
 		// TODO change border color based on whether user has focused window since new messages arrived. 
@@ -100,7 +106,11 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 			} else {
 				if (!this.typingArea_.getText().equals("")) {
 					// TODO Get username of this user
-					Message message = new Message(this.typingArea_.getText(), "me", this.id_, this.threadList_.getConversationId());
+					Message message = new Message(this.typingArea_.getText(), 
+												  "me", 
+												  this.id_, 
+												  this.threadList_.getConversationId(),
+												  this.usersInThread_);
 					this.typingArea_.setText("");
 					this.messages_.add(message);
 					this.threadList_.getSender().queueMessage(message);
