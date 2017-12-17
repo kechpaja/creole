@@ -3,7 +3,6 @@ package ui;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.concurrent.PriorityBlockingQueue;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -13,6 +12,7 @@ import javax.swing.JTextArea;
 
 import backend.Message;
 import resources.Strings;
+import utils.InsertionSortList;
 
 public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 	
@@ -20,18 +20,18 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 	 * 
 	 */
 	private static final long serialVersionUID = 6053838067760788383L;
+	private static int count_ = 0;
 	private String title_;
-	private int count_ = 0;
 	private JTextArea chatArea_;
 	private JTextArea typingArea_;
 	private long timeOfLastActivity_; // Time of last activity, in milliseconds
 	
 	// List of messages to be displayed
-	private PriorityBlockingQueue<Message> messages_;
+	private InsertionSortList<Message> messages_;
 	
 	protected Thread() {
 		this.title_ = Strings.getDefaultThreadTitle(count_++);
-		this.messages_ = new PriorityBlockingQueue<Message>();
+		this.messages_ = new InsertionSortList<Message>();
 		
 		// TODO advanced: user list; clone button
 		// TODO actually show the title somewhere
@@ -117,6 +117,13 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 	
 	protected String getTitle() {
 		return this.title_;
+	}
+	
+	protected JTextArea getListEntry() {
+		JTextArea listEntry = new JTextArea(this.title_);
+		listEntry.setEditable(false);
+		listEntry.setVisible(true);
+		return listEntry;
 	}
 	
 	protected void redisplay() {

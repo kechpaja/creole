@@ -1,11 +1,11 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.util.concurrent.PriorityBlockingQueue;
 
 import javax.swing.JPanel;
 
 import resources.Strings;
+import utils.InsertionSortList;
 
 public class Conversation extends JPanel {
 	
@@ -48,7 +48,7 @@ public class Conversation extends JPanel {
 		this.chatArea_.redisplay();
 	}
 	
-	protected PriorityBlockingQueue<Thread> getThreads() {
+	protected InsertionSortList<Thread> getThreads() {
 		return this.threadList_.getThreads();
 	}
 }
