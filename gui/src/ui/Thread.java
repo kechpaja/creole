@@ -106,14 +106,10 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 			} else {
 				if (!this.typingArea_.getText().equals("")) {
 					// TODO Get username of this user
-					Message message = new Message(this.typingArea_.getText(), 
-												  "me", 
-												  this.id_, 
-												  this.threadList_.getConversationId(),
-												  this.usersInThread_);
+					Message message = new Message(this.typingArea_.getText(), "me", this.id_, this.threadList_.getConversationId());
 					this.typingArea_.setText("");
 					this.messages_.add(message);
-					this.threadList_.getSender().queueMessage(message);
+					this.threadList_.getSender().queueMessage(message, this.usersInThread_);
 					this.redisplay();
 				}
 				
