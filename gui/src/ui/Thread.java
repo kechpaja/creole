@@ -22,67 +22,78 @@ public class Thread extends JPanel implements KeyListener {
 	private int count_ = 0;
 	private JTextArea chatArea_;
 	private JTextArea typingArea_;
+	private long timeOfLastActivity_; // Time of last activity, in milliseconds
 	
 	protected Thread() {
 		this.title_ = Strings.getDefaultThreadTitle(count_++);
 		
-		
-		// TODO text area with convo; typing area for typing
 		// TODO advanced: user list; clone button
+		// TODO actually show the title somewhere
 		
 		this.chatArea_ = new JTextArea(5, 3);
-		this.chatArea_.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));// TODO tweak color and thickness?
 		this.chatArea_.setEditable(false);
 		this.chatArea_.setLineWrap(true);
 		this.chatArea_.setWrapStyleWord(true);
-		this.add(new JScrollPane(this.chatArea_));
+		JScrollPane chatAreaScrollPane = new JScrollPane(this.chatArea_);
+		chatAreaScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
+		this.add(chatAreaScrollPane);
 		
-		this.typingArea_ = new JTextArea(5, 3); 
-		this.typingArea_.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));// TODO tweak color and thickness?
+		this.typingArea_ = new JTextArea(5, 3);
 		this.typingArea_.setEditable(true);
 		this.typingArea_.setLineWrap(true);
 		this.typingArea_.setWrapStyleWord(true);
 		this.typingArea_.addKeyListener(this);
-		this.add(new JScrollPane(this.typingArea_));
+		JScrollPane typingAreaScrollPane = new JScrollPane(this.typingArea_);
+		typingAreaScrollPane.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Color.BLUE));
+		this.add(typingAreaScrollPane);
 		
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(true);
 		this.validate();
+		
+		this.updateTimeOfLastActivity();
 	}
-	
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			this.typingArea_.setText("");
-		}
+		//  Do nothing
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			// TODO Don't loc this, change it. 
-			this.chatArea_.append("username: " + this.typingArea_.getText() + "\n");
+			if (e.isShiftDown()) {
+				this.typingArea_.append("\n");
+			} else {
+				if (!this.typingArea_.getText().equals("")) {
+					// TODO Don't loc this, change it. 
+					this.chatArea_.append("username: " + this.typingArea_.getText() + "\n");
+					this.typingArea_.setText("");
+				}
+				
+				e.consume();
+			}
 		}
+		
+		this.updateTimeOfLastActivity();
 	}
-
-
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		// Do nothing
 	}
-	
-	
 	
 	protected String getTitle() {
 		return this.title_;
 	}
 	
-	protected int timeSinceLastActivity() {
-		return 0; // TODO
+	protected long timeSinceLastActivity() {
+		return (System.currentTimeMillis() - this.timeOfLastActivity_);
 	}
-
+	
+	private void updateTimeOfLastActivity() {
+		this.timeOfLastActivity_ = System.currentTimeMillis();
+	}
 }

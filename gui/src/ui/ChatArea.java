@@ -26,9 +26,6 @@ public class ChatArea extends JPanel {
 		this.setOpaque(true);
 	}
 	
-	
-	
-	
 	protected void addThread(Thread thread) {
 		int maxThreads = this.maxCols_ * this.maxRows_;
 		
@@ -37,7 +34,7 @@ public class ChatArea extends JPanel {
 		} else {
 			// find thread that was last active the longest ago and replace it
 			int oldestIndex = 0;
-			int longestTime = 0; // longest time since last activity
+			long longestTime = 0; // longest time since last activity
 			for (int i = 0; i < this.threads_.size(); i++) {
 				if (this.threads_.get(i).timeSinceLastActivity() > longestTime) {
 					oldestIndex = i;
