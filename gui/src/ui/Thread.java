@@ -1,14 +1,15 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import backend.Message;
 import resources.Strings;
@@ -21,7 +22,7 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 	 */
 	private static final long serialVersionUID = 6053838067760788383L;
 	private static int count_ = 0;
-	private String title_;
+	private JTextField titleField_;
 	private JTextArea chatArea_;
 	private JTextArea typingArea_;
 	private long timeOfLastActivity_; // Time of last activity, in milliseconds
@@ -30,12 +31,17 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 	private InsertionSortList<Message> messages_;
 	
 	protected Thread() {
-		this.title_ = Strings.getDefaultThreadTitle(count_++);
 		this.messages_ = new InsertionSortList<Message>();
 		
 		// TODO advanced: user list; clone button
-		// TODO actually show the title somewhere
 		// TODO change border color based on whether user has focused window since new messages arrived. 
+		
+
+		this.setLayout(new BorderLayout());
+		
+		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(count_++));
+		this.titleField_.setEditable(false);
+		this.add(this.titleField_, BorderLayout.PAGE_START);
 		
 		this.chatArea_ = new JTextArea(5, 3);
 		this.chatArea_.setEditable(false);
@@ -43,7 +49,7 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 		this.chatArea_.setWrapStyleWord(true);
 		JScrollPane chatAreaScrollPane = new JScrollPane(this.chatArea_);
 		chatAreaScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
-		this.add(chatAreaScrollPane);
+		this.add(chatAreaScrollPane, BorderLayout.CENTER);
 		
 		this.typingArea_ = new JTextArea(5, 3);
 		this.typingArea_.setEditable(true);
@@ -52,11 +58,10 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 		this.typingArea_.addKeyListener(this);
 		JScrollPane typingAreaScrollPane = new JScrollPane(this.typingArea_);
 		typingAreaScrollPane.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Color.BLUE));
-		this.add(typingAreaScrollPane);
+		this.add(typingAreaScrollPane, BorderLayout.PAGE_END);
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 		
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(true);
 		this.validate();
 		
@@ -116,14 +121,7 @@ public class Thread extends JPanel implements KeyListener, Comparable<Thread> {
 	}
 	
 	protected String getTitle() {
-		return this.title_;
-	}
-	
-	protected JTextArea getListEntry() {
-		JTextArea listEntry = new JTextArea(this.title_);
-		listEntry.setEditable(false);
-		listEntry.setVisible(true);
-		return listEntry;
+		return this.titleField_.getText();
 	}
 	
 	protected void redisplay() {

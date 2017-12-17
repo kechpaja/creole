@@ -1,5 +1,7 @@
 package ui;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -7,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import resources.Strings;
 import utils.InsertionSortList;
@@ -33,7 +36,6 @@ public class ThreadList extends JPanel implements ActionListener {
 		this.add(newThreadButton);
 		
 		this.threadListPanel_ = new JPanel();
-		this.threadListPanel_.setLayout(new BoxLayout(this.threadListPanel_, BoxLayout.Y_AXIS));
 		this.add(new JScrollPane(this.threadListPanel_));
 		
 		// List runs from top to bottom
@@ -59,9 +61,16 @@ public class ThreadList extends JPanel implements ActionListener {
 	
 	protected void redisplay() {
 		this.threadListPanel_.removeAll();
+		this.threadListPanel_.setLayout(new GridBagLayout());
 		
 		for (Thread thread : this.threads_) {
-			this.threadListPanel_.add(thread.getListEntry());
+			GridBagConstraints c = new GridBagConstraints();
+			
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridx = 0;
+			c.weightx = 1.0;
+			
+			this.threadListPanel_.add(new JTextField(thread.getTitle()), c);
 		}
 		
 		this.validate();
