@@ -28,13 +28,17 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 	private JTextArea chatArea_;
 	private JTextArea typingArea_;
 	private ThreadListEntry listEntry_;
+	private ThreadList threadList_;
+	private String id_;
 	private long timeOfLastActivity_; // Time of last activity, in milliseconds
 	
 	// List of messages to be displayed
 	private InsertionSortList<Message> messages_;
 	
-	protected Thread() {
+	protected Thread(ThreadList threadList) {
+		this.id_ = System.currentTimeMillis() + "-" + Thread.count_++; // TODO work in user ID?
 		this.messages_ = new InsertionSortList<Message>();
+		this.threadList_ = threadList;
 		
 		// TODO advanced: user list; clone button
 		// TODO change border color based on whether user has focused window since new messages arrived. 
@@ -42,7 +46,7 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 
 		this.setLayout(new BorderLayout());
 		
-		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(count_++));
+		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(Thread.count_));
 		this.titleField_.setEditable(false);
 		this.titleField_.addFocusListener(this);
 		this.add(this.titleField_, BorderLayout.PAGE_START);
@@ -96,17 +100,10 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 			} else {
 				if (!this.typingArea_.getText().equals("")) {
 					// TODO Get username of this user
-					Message message = new Message(this.typingArea_.getText(), "me");
+					Message message = new Message(this.typingArea_.getText(), "me", this.id_, this.threadList_.getConversationId());
 					this.typingArea_.setText("");
-					
 					this.messages_.add(message);
-					
-					// TODO send that message on to networking backend as well
-					
-					// TODO what we should really be doing is sending a message object to something in the backend,
-					// and then call the backend for the new list of messages to redisplay in this thread. The thread
-					// object here should have an "update" method that just fetches from there. 
-					
+					this.threadList_.getSender().queueMessage(message);
 					this.redisplay();
 				}
 				
@@ -160,6 +157,10 @@ public class Thread extends JPanel implements KeyListener, FocusListener, Compar
 	
 	protected ThreadListEntry getListEntry() {
 		return this.listEntry_;
+	}
+	
+	protected String getId() {
+		return this.id_;
 	}
 	
 	protected void redisplay() {

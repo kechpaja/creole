@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import backend.Sender;
 import resources.Strings;
 
 public class Window extends JFrame implements ActionListener {
@@ -18,6 +19,7 @@ public class Window extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -808477151995604656L;
 	
 	private ConversationsPanel conversations_ = null;
+	private Sender sender_ = null;
 
 	/*
 	 * Initialize the window. 
@@ -34,9 +36,13 @@ public class Window extends JFrame implements ActionListener {
 		JPanel panel = new JPanel();
 		panel.add(newConversationButton);
 		
+
+		// TODO initialize sender threads
+		this.sender_ = new Sender();
 		
 		// TODO load up existing data, if it's there
-		conversations_ = new ConversationsPanel();
+		conversations_ = new ConversationsPanel(this.sender_);
+		
 		
 		panel.add(conversations_);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

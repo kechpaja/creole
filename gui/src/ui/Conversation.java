@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
+import backend.Message;
+import backend.Sender;
 import resources.Strings;
 import utils.InsertionSortList;
 
@@ -16,13 +18,18 @@ public class Conversation extends JPanel {
 	
 	private static int count_ = 0;
 	private String title_;
+	private String id_;
 	
 	private ThreadList threadList_;
 	private ChatArea chatArea_;
 	private UserList userList_;
 	
-	protected Conversation() {
-		title_ = Strings.getDefaultConversationTitle(count_++);
+	private Sender sender_;
+	
+	protected Conversation(Sender sender) {
+		this.title_ = Strings.getDefaultConversationTitle(count_++);
+		this.id_ = System.currentTimeMillis() + "-" + Conversation.count_;
+		this.sender_ = sender;
 		
 		this.threadList_ = new ThreadList(this);
 		this.chatArea_ = new ChatArea(this);
@@ -43,6 +50,10 @@ public class Conversation extends JPanel {
 		return this.title_;
 	}
 	
+	protected String getId() {
+		return this.id_;
+	}
+	
 	protected void redisplay() {
 		this.threadList_.redisplay();
 		this.chatArea_.redisplay();
@@ -50,5 +61,13 @@ public class Conversation extends JPanel {
 	
 	protected InsertionSortList<Thread> getThreads() {
 		return this.threadList_.getThreads();
+	}
+	
+	protected void deliver(Message message) {
+		this.threadList_.deliver(message);
+	}
+	
+	protected Sender getSender() {
+		return this.sender_;
 	}
 }

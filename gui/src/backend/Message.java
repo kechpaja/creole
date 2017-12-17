@@ -5,11 +5,15 @@ public class Message implements Comparable<Message> {
 	private String content_;
 	private String sendingUser_;
 	private long sendTime_;
+	private String threadId_;
+	private String conversationId_;
 	
-	public Message(String content, String sendingUser) {
+	public Message(String content, String sendingUser, String threadId, String conversationId) {
 		this.content_ = content;
 		this.sendingUser_ = sendingUser;
 		this.sendTime_ = System.currentTimeMillis();
+		this.threadId_ = threadId;
+		this.conversationId_ = conversationId;
 	}
 	
 	

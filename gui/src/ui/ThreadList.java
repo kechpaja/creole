@@ -4,12 +4,16 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import backend.Message;
+import backend.Sender;
 import resources.Strings;
 import utils.InsertionSortList;
 
@@ -22,11 +26,13 @@ public class ThreadList extends JPanel implements ActionListener {
 	
 	private Conversation parent_;
 	private InsertionSortList<Thread> threads_;
+	private Map<String, Thread> threadMap_;
 	private JPanel threadListPanel_;
 	
 	protected ThreadList(Conversation conversation) {
 		this.parent_ = conversation;
 		this.threads_ = new InsertionSortList<Thread>();
+		this.threadMap_ = new HashMap<String, Thread>();
 		
 		// Set up New Thread button
 		JButton newThreadButton = new JButton(Strings.getNewThreadButtonText());
@@ -44,14 +50,14 @@ public class ThreadList extends JPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("new thread")) {
-			this.threads_.add(new Thread());
-			this.parent_.redisplay();
+			this.addThread(new Thread(this));
 		}
 	}
 	
 	protected void addThread(Thread thread) {
 		this.threads_.add(thread);
-		this.redisplay();
+		this.threadMap_.put(thread.getId(), thread);
+		this.parent_.redisplay();
 	}
 	
 	protected InsertionSortList<Thread> getThreads() {
@@ -73,6 +79,18 @@ public class ThreadList extends JPanel implements ActionListener {
 		}
 		
 		this.validate();
+	}
+	
+	protected String getConversationId() {
+		return this.parent_.getId();
+	}
+	
+	protected Sender getSender() {
+		return this.parent_.getSender();
+	}
+	
+	protected void deliver(Message message) {
+		// TODO 
 	}
 
 }
