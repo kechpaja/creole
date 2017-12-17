@@ -18,6 +18,7 @@ public class Window extends JFrame implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = -808477151995604656L;
+	private static String currentUser_;
 	
 	private ConversationsPanel conversations_ = null;
 	private Sender sender_ = null;
@@ -25,7 +26,10 @@ public class Window extends JFrame implements ActionListener {
 	/*
 	 * Initialize the window. 
 	 */
-	private void init() {
+	private void init(String user) {
+		// Set current user
+		Window.currentUser_ = user;
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// Handle setting up the "New Conversation" button TODO localize
@@ -69,8 +73,11 @@ public class Window extends JFrame implements ActionListener {
 		Strings.setLocalizationLanguage("epo"); // TODO read this from config file somewhere
 		
 		Window window = new Window();
-		window.init();
-
+		window.init("kechpaja"); // TODO read username from config as well, probably. Or from login screen. 
+	}
+	
+	public static String getCurrentUser() {
+		return Window.currentUser_;
 	}
 
 }

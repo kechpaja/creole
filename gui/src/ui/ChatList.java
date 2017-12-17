@@ -25,14 +25,14 @@ public class ChatList extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 8408968042626016488L;
 	
 	private Conversation parent_;
-	private InsertionSortList<Chat> threads_;
-	private Map<String, Chat> threadMap_;
-	private JPanel threadListPanel_;
+	private InsertionSortList<Chat> chats_;
+	private Map<String, Chat> chatMap_;
+	private JPanel chatListPanel_;
 	
 	protected ChatList(Conversation conversation) {
 		this.parent_ = conversation;
-		this.threads_ = new InsertionSortList<Chat>();
-		this.threadMap_ = new HashMap<String, Chat>();
+		this.chats_ = new InsertionSortList<Chat>();
+		this.chatMap_ = new HashMap<String, Chat>();
 		
 		// Set up New Thread button
 		JButton newThreadButton = new JButton(Strings.getNewThreadButtonText());
@@ -40,8 +40,8 @@ public class ChatList extends JPanel implements ActionListener {
 		newThreadButton.setActionCommand("new thread");
 		this.add(newThreadButton);
 		
-		this.threadListPanel_ = new JPanel();
-		this.add(new JScrollPane(this.threadListPanel_));
+		this.chatListPanel_ = new JPanel();
+		this.add(new JScrollPane(this.chatListPanel_));
 		
 		// List runs from top to bottom
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -55,27 +55,27 @@ public class ChatList extends JPanel implements ActionListener {
 	}
 	
 	protected void addThread(Chat thread) {
-		this.threads_.add(thread);
-		this.threadMap_.put(thread.getId(), thread);
+		this.chats_.add(thread);
+		this.chatMap_.put(thread.getId(), thread);
 		this.parent_.redisplay();
 	}
 	
-	protected InsertionSortList<Chat> getThreads() {
-		return this.threads_;
+	protected InsertionSortList<Chat> getChats() {
+		return this.chats_;
 	}
 	
 	protected void redisplay() {
-		this.threadListPanel_.removeAll();
-		this.threadListPanel_.setLayout(new GridBagLayout());
+		this.chatListPanel_.removeAll();
+		this.chatListPanel_.setLayout(new GridBagLayout());
 		
-		for (Chat thread : this.threads_) {
+		for (Chat thread : this.chats_) {
 			GridBagConstraints c = new GridBagConstraints();
 			
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.gridx = 0;
 			c.weightx = 1.0;
 			
-			this.threadListPanel_.add(thread.getListEntry(), c);
+			this.chatListPanel_.add(thread.getListEntry(), c);
 		}
 		
 		this.validate();

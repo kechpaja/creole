@@ -60,7 +60,7 @@ public class Conversation extends JPanel {
 	}
 	
 	protected InsertionSortList<Chat> getThreads() {
-		return this.threadList_.getThreads();
+		return this.threadList_.getChats();
 	}
 	
 	protected void deliver(Message message) {

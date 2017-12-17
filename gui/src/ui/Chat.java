@@ -30,64 +30,27 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 	private JTextArea chatArea_;
 	private JTextArea typingArea_;
 	private ChatListEntry listEntry_;
-	private ChatList threadList_;
+	private ChatList chatList_;
 	private String id_;
 	private long timeOfLastActivity_; // Time of last activity, in milliseconds
-	private List<String> usersInThread_;
+	private List<String> usersInChat_;
 	
 	// List of messages to be displayed
 	private InsertionSortList<Message> messages_;
 	
-	protected Chat(ChatList threadList) {
-		this.id_ = System.currentTimeMillis() + "-" + Chat.count_++; // TODO work in user ID?
+	protected Chat(ChatList chatList) {
+		this.id_ = Window.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + Chat.count_++;
 		this.messages_ = new InsertionSortList<Message>();
-		this.threadList_ = threadList;
+		this.chatList_ = chatList;
 		
 		// TODO actually add users to user list
-		this.usersInThread_ = new ArrayList<String>();
+		this.usersInChat_ = new ArrayList<String>();
 		
 		// TODO advanced: user list; clone button
 		// TODO change border color based on whether user has focused window since new messages arrived. 
 		
 
-		this.setLayout(new BorderLayout());
-		
-		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(Chat.count_));
-		this.titleField_.setEditable(false);
-		this.titleField_.addFocusListener(this);
-		this.add(this.titleField_, BorderLayout.PAGE_START);
-		
-		this.chatArea_ = new JTextArea(5, 3);
-		this.chatArea_.setEditable(false);
-		this.chatArea_.setLineWrap(true);
-		this.chatArea_.setWrapStyleWord(true);
-		this.chatArea_.addFocusListener(this);
-		JScrollPane chatAreaScrollPane = new JScrollPane(this.chatArea_);
-		chatAreaScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
-		this.add(chatAreaScrollPane, BorderLayout.CENTER);
-		
-		this.typingArea_ = new JTextArea(5, 3);
-		this.typingArea_.setEditable(true);
-		this.typingArea_.setLineWrap(true);
-		this.typingArea_.setWrapStyleWord(true);
-		this.typingArea_.addKeyListener(this);
-		this.typingArea_.addFocusListener(this);
-		JScrollPane typingAreaScrollPane = new JScrollPane(this.typingArea_);
-		typingAreaScrollPane.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Color.BLUE));
-		this.add(typingAreaScrollPane, BorderLayout.PAGE_END);
-		
-		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-
-		this.listEntry_ = new ChatListEntry(this); // Depends on title field being set
-		
-		// Listeners
-		this.addFocusListener(this);
-		
-		this.setOpaque(true);
-		this.validate();
-		
-		this.updateTimeOfLastActivity();
-		this.redisplay();
+		this.init();
 	}
 	
 	
@@ -105,11 +68,10 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 				this.typingArea_.append("\n");
 			} else {
 				if (!this.typingArea_.getText().equals("")) {
-					// TODO Get username of this user
-					Message message = new Message(this.typingArea_.getText(), "me", this.id_, this.threadList_.getConversationId());
+					Message message = new Message(this.typingArea_.getText(), Window.getCurrentUser(), this.id_, this.chatList_.getConversationId());
 					this.typingArea_.setText("");
 					this.messages_.add(message);
-					this.threadList_.getSender().queueMessage(message, this.usersInThread_);
+					this.chatList_.getSender().queueMessage(message, this.usersInChat_);
 					this.redisplay();
 				}
 				
@@ -181,5 +143,46 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 	
 	private void updateTimeOfLastActivity() {
 		this.timeOfLastActivity_ = System.currentTimeMillis();
+	}
+	
+	private void init() {
+		this.setLayout(new BorderLayout());
+		
+		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(Chat.count_));
+		this.titleField_.setEditable(false);
+		this.titleField_.addFocusListener(this);
+		this.add(this.titleField_, BorderLayout.PAGE_START);
+		
+		this.chatArea_ = new JTextArea(5, 3);
+		this.chatArea_.setEditable(false);
+		this.chatArea_.setLineWrap(true);
+		this.chatArea_.setWrapStyleWord(true);
+		this.chatArea_.addFocusListener(this);
+		JScrollPane chatAreaScrollPane = new JScrollPane(this.chatArea_);
+		chatAreaScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
+		this.add(chatAreaScrollPane, BorderLayout.CENTER);
+		
+		this.typingArea_ = new JTextArea(5, 3);
+		this.typingArea_.setEditable(true);
+		this.typingArea_.setLineWrap(true);
+		this.typingArea_.setWrapStyleWord(true);
+		this.typingArea_.addKeyListener(this);
+		this.typingArea_.addFocusListener(this);
+		JScrollPane typingAreaScrollPane = new JScrollPane(this.typingArea_);
+		typingAreaScrollPane.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Color.BLUE));
+		this.add(typingAreaScrollPane, BorderLayout.PAGE_END);
+		
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+
+		this.listEntry_ = new ChatListEntry(this); // Depends on title field being set
+		
+		// Listeners
+		this.addFocusListener(this);
+		
+		this.setOpaque(true);
+		this.validate();
+		
+		this.updateTimeOfLastActivity();
+		this.redisplay();
 	}
 }
