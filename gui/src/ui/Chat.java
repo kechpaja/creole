@@ -2,8 +2,6 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -18,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import backend.Message;
+import backend.SessionManager;
 import resources.Strings;
 import utils.InsertionSortList;
 
@@ -42,18 +41,29 @@ public class Chat extends JPanel implements KeyListener, MouseListener, Comparab
 	private InsertionSortList<Message> messages_;
 	
 	protected Chat(ChatList chatList) {
-		this.id_ = Window.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + Chat.count_++;
+		this.id_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + Chat.count_++;
 		this.messages_ = new InsertionSortList<Message>();
 		this.chatList_ = chatList;
 		
 		// TODO actually add users to user list
 		this.usersInChat_ = new ArrayList<String>();
 		
-		// TODO advanced: user list; clone button
 		// TODO change border color based on whether user has focused window since new messages arrived. 
 		
-
 		this.init();
+	}
+	
+	
+	public Chat fork() {
+		Chat forked = this.chatList_.createNewChat();
+		for (String user : this.usersInChat_) {
+			forked.usersInChat_.add(user);
+		}
+		
+		// TODO consider including a reference to the chat that we are forked from, and a button to take the user there. 
+		// That is a goal for later, though. 
+		
+		return forked;
 	}
 	
 	
@@ -71,7 +81,7 @@ public class Chat extends JPanel implements KeyListener, MouseListener, Comparab
 				this.typingArea_.append("\n");
 			} else {
 				if (!this.typingArea_.getText().equals("")) {
-					Message message = new Message(this.typingArea_.getText(), Window.getCurrentUser(), this.id_, this.chatList_.getConversationId());
+					Message message = new Message(this.typingArea_.getText(), SessionManager.getCurrentUser(), this.id_, this.chatList_.getConversationId());
 					this.typingArea_.setText("");
 					this.messages_.add(message);
 					this.chatList_.getSender().queueMessage(message, this.usersInChat_);
@@ -158,7 +168,11 @@ public class Chat extends JPanel implements KeyListener, MouseListener, Comparab
 		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(Chat.count_));
 		this.titleField_.setEditable(false);
 		this.titleField_.addMouseListener(this);
-		this.add(this.titleField_, BorderLayout.PAGE_START);
+		
+		JPanel topPanel = new JPanel();
+		topPanel.add(this.titleField_);
+		topPanel.add(new ForkButton(this));
+		this.add(topPanel, BorderLayout.PAGE_START);
 		
 		this.historyArea_ = new ChatHistoryArea(this);
 		this.wrapInScrollPaneAndAdd(this.historyArea_, BorderLayout.CENTER, false);

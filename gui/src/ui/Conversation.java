@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import backend.Message;
 import backend.Sender;
+import backend.SessionManager;
 import resources.Strings;
 import utils.InsertionSortList;
 
@@ -28,7 +29,7 @@ public class Conversation extends JPanel {
 	
 	protected Conversation(Sender sender) {
 		this.title_ = Strings.getDefaultConversationTitle(count_++);
-		this.id_ = System.currentTimeMillis() + "-" + Conversation.count_;
+		this.id_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + Conversation.count_;
 		this.sender_ = sender;
 		
 		this.chatList_ = new ChatList(this);

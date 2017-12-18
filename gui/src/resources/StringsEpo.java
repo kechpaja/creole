@@ -11,6 +11,11 @@ class StringsEpo extends Strings {
 	protected String getLocalizedDefaultThreadTitle(int count) {
 		return "Fadeno " + count;
 	}
+	
+	@Override
+	protected String getLocalizedForkButtonText() {
+		return "Forku"; // TODO I'm really not sure
+	}
 
 	@Override
 	protected String getLocalizedNewConversationButtonText() {

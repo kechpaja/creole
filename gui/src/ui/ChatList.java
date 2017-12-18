@@ -54,11 +54,12 @@ public class ChatList extends JPanel implements ActionListener {
 		}
 	}
 	
-	protected void createNewChat() {
+	protected Chat createNewChat() {
 		Chat chat = new Chat(this);
 		this.chats_.add(chat);
 		this.chatMap_.put(chat.getId(), chat);
 		this.parent_.redisplay();
+		return chat;
 	}
 	
 	protected InsertionSortList<Chat> getChats() {
@@ -93,7 +94,7 @@ public class ChatList extends JPanel implements ActionListener {
 	
 	protected void deliver(Message message) {
 		if (!this.chatMap_.containsKey(message.getId())) {
-			this.createNewChat(); // Unrecognized message indicates that a new chat has been started
+			this.createNewChat().deliver(message); // Unrecognized message indicates that a new chat has been started
 			
 			// TODO eventually, we'll have to check against a list of chats that have been deleted, and ignore if
 			// it is one of those, but that's for the future. Or perhaps every message that can start a new chat 

@@ -11,6 +11,11 @@ class StringsEng extends Strings {
 	protected String getLocalizedDefaultThreadTitle(int count) {
 		return "Thread " + count;
 	}
+	
+	@Override
+	protected String getLocalizedForkButtonText() {
+		return "Fork";
+	}
 
 	@Override
 	protected String getLocalizedNewConversationButtonText() {

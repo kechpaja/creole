@@ -1,7 +1,9 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JTabbedPane;
 
@@ -16,27 +18,33 @@ public class ConversationsPanel extends JTabbedPane {
 	private static final long serialVersionUID = 7512355562992395347L;
 	
 	private List<Conversation> conversations_;
+	private Map<String, Conversation> conversationMap_;
 	private Sender sender_;
 	
 	protected ConversationsPanel(Sender sender) {
 		this.conversations_ = new ArrayList<Conversation>();
+		this.conversationMap_ = new HashMap<String, Conversation>();
 		this.sender_ = sender;
 	}
 	
 	
 	public void deliver(List<Message> messages) {
 		for (Message message : messages) {
-			// TODO determine conversation ID
+			if (!this.conversationMap_.containsKey(message.getConversationId())) {
+				this.createNewConversation().deliver(message);
+			}
 			
-			// TODO deliver message to correct conversation
+			this.conversationMap_.get(message.getConversationId()).deliver(message);
 		}
 	}
 	
 	
-	protected void createNewConversation() {
+	protected Conversation createNewConversation() {
 		Conversation conversation = new Conversation(this.sender_);
-		conversations_.add(conversation);
+		this.conversations_.add(conversation);
+		this.conversationMap_.put(conversation.getId(), conversation);
 		this.addConversation(conversation);
+		return conversation;
 	}
 	
 	

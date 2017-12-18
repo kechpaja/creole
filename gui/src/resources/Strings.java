@@ -29,6 +29,10 @@ public abstract class Strings {
 	public static String getDefaultThreadTitle(int count) {
 		return Strings.strings_.getLocalizedDefaultThreadTitle(count);
 	}
+	
+	public static String getForkButtonText() {
+		return Strings.strings_.getLocalizedForkButtonText();
+	}
 
 	public static String getNewConversationButtonText() {
 		return Strings.strings_.getLocalizedNewConversationButtonText();
@@ -41,6 +45,7 @@ public abstract class Strings {
 	
 	protected abstract String getLocalizedDefaultConversationTitle(int count);
 	protected abstract String getLocalizedDefaultThreadTitle(int count);
+	protected abstract String getLocalizedForkButtonText();
 	protected abstract String getLocalizedNewConversationButtonText();
 	protected abstract String getLocalizedNewThreadButtonText();
 

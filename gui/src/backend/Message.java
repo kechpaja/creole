@@ -16,8 +16,7 @@ public class Message implements Comparable<Message> {
 		this.sendTime_ = System.currentTimeMillis();
 		this.threadId_ = threadId;
 		this.conversationId_ = conversationId;
-		
-		// TODO set message ID
+		this.messageId_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + SessionManager.getSessionId(); 
 	}
 	
 	
