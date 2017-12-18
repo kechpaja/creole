@@ -96,7 +96,7 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 		this.setPrioritized();
 		//this.listEntry_.setHighlighted(true);
 		//this.setBorder(BorderFactory.createLineBorder(Color.CYAN, 5));
-		//this.redisplayConversation();
+		this.redisplayConversation();
 	}
 
 
