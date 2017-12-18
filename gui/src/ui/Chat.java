@@ -93,18 +93,19 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 	
 	@Override
 	public void focusGained(FocusEvent arg0) {
-		this.listEntry_.setHighlighted(true);
-		this.setBorder(BorderFactory.createLineBorder(Color.CYAN, 5));
-		this.validate();
+		this.setPrioritized();
+		//this.listEntry_.setHighlighted(true);
+		//this.setBorder(BorderFactory.createLineBorder(Color.CYAN, 5));
+		//this.redisplayConversation();
 	}
 
 
 	@Override
 	public void focusLost(FocusEvent arg0) {
-		this.listEntry_.setHighlighted(false);
-		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-		this.validate();
-		this.redisplayConversation();
+		//this.listEntry_.setHighlighted(false);
+		//this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+		//this.validate();
+		//this.redisplayConversation();
 	}
 	
 	
@@ -134,6 +135,13 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 	
 	protected void redisplay() {
 		this.historyArea_.displayMessages(this.messages_);
+		
+		this.listEntry_.setHighlighted(this.isPrioritized_);
+		if (this.isPrioritized_) {
+			this.setBorder(BorderFactory.createLineBorder(Color.CYAN, 5));
+		} else {
+			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+		}
 	}
 	
 	protected void deliver(Message message) {
@@ -148,6 +156,10 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 		}
 		
 		this.isPrioritized_ = true;
+		
+		for (Chat chat : this.chatList_.getChats()) {
+			chat.redisplay();
+		}
 	}
 	
 	protected void redisplayConversation() {
