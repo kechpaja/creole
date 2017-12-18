@@ -8,7 +8,7 @@ class StringsEng extends Strings {
 	}
 
 	@Override
-	protected String getLocalizedDefaultThreadTitle(int count) {
+	protected String getLocalizedDefaultChatTitle(int count) {
 		return "Thread " + count;
 	}
 	
@@ -23,7 +23,7 @@ class StringsEng extends Strings {
 	}
 
 	@Override
-	protected String getLocalizedNewThreadButtonText() {
+	protected String getLocalizedNewChatButtonText() {
 		return "New Thread";
 	}
 

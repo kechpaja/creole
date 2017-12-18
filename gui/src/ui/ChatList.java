@@ -2,22 +2,18 @@ package ui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import backend.Message;
 import backend.Sender;
-import resources.Strings;
 import utils.InsertionSortList;
 
-public class ChatList extends JPanel implements ActionListener {
+public class ChatList extends JPanel {
 
 	/**
 	 * 
@@ -34,11 +30,8 @@ public class ChatList extends JPanel implements ActionListener {
 		this.chats_ = new InsertionSortList<Chat>();
 		this.chatMap_ = new HashMap<String, Chat>();
 		
-		// Set up New Thread button
-		JButton newChatButton = new JButton(Strings.getNewThreadButtonText());
-		newChatButton.addActionListener(this);
-		newChatButton.setActionCommand("new thread");
-		this.add(newChatButton);
+		// Set up New Chat button
+		this.add(new NewChatButton(this));
 		
 		this.chatListPanel_ = new JPanel();
 		this.add(new JScrollPane(this.chatListPanel_));
@@ -46,12 +39,6 @@ public class ChatList extends JPanel implements ActionListener {
 		// List runs from top to bottom
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(true);
-	}
-	
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("new thread")) {
-			this.createNewChat();
-		}
 	}
 	
 	protected Chat createNewChat() {

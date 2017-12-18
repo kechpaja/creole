@@ -26,8 +26,8 @@ public abstract class Strings {
 		return Strings.strings_.getLocalizedDefaultConversationTitle(count);
 	}
 	
-	public static String getDefaultThreadTitle(int count) {
-		return Strings.strings_.getLocalizedDefaultThreadTitle(count);
+	public static String getDefaultChatTitle(int count) {
+		return Strings.strings_.getLocalizedDefaultChatTitle(count);
 	}
 	
 	public static String getForkButtonText() {
@@ -38,15 +38,15 @@ public abstract class Strings {
 		return Strings.strings_.getLocalizedNewConversationButtonText();
 	}
 	
-	public static String getNewThreadButtonText() {
-		return Strings.strings_.getLocalizedNewThreadButtonText();
+	public static String getNewChatButtonText() {
+		return Strings.strings_.getLocalizedNewChatButtonText();
 	}
 	
 	
 	protected abstract String getLocalizedDefaultConversationTitle(int count);
-	protected abstract String getLocalizedDefaultThreadTitle(int count);
+	protected abstract String getLocalizedDefaultChatTitle(int count);
 	protected abstract String getLocalizedForkButtonText();
 	protected abstract String getLocalizedNewConversationButtonText();
-	protected abstract String getLocalizedNewThreadButtonText();
+	protected abstract String getLocalizedNewChatButtonText();
 
 }

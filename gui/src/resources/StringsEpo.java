@@ -8,7 +8,7 @@ class StringsEpo extends Strings {
 	}
 
 	@Override
-	protected String getLocalizedDefaultThreadTitle(int count) {
+	protected String getLocalizedDefaultChatTitle(int count) {
 		return "Fadeno " + count;
 	}
 	
@@ -23,7 +23,7 @@ class StringsEpo extends Strings {
 	}
 
 	@Override
-	protected String getLocalizedNewThreadButtonText() {
+	protected String getLocalizedNewChatButtonText() {
 		return "Novan fadenon";
 	}
 

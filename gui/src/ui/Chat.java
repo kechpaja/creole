@@ -165,7 +165,7 @@ public class Chat extends JPanel implements KeyListener, MouseListener, Comparab
 	private void init() {
 		this.setLayout(new BorderLayout());
 		
-		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(Chat.count_));
+		this.titleField_ = new JTextField(Strings.getDefaultChatTitle(Chat.count_));
 		this.titleField_.setEditable(false);
 		this.titleField_.addMouseListener(this);
 		
