@@ -94,19 +94,11 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 	@Override
 	public void focusGained(FocusEvent arg0) {
 		this.setPrioritized();
-		//this.listEntry_.setHighlighted(true);
-		//this.setBorder(BorderFactory.createLineBorder(Color.CYAN, 5));
-		this.redisplayConversation();
-	}
-
-
-	@Override
-	public void focusLost(FocusEvent arg0) {
-		//this.listEntry_.setHighlighted(false);
-		//this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-		//this.validate();
 		//this.redisplayConversation();
 	}
+
+	@Override
+	public void focusLost(FocusEvent arg0) { /* Do nothing */ }
 	
 	
 	@Override

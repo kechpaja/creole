@@ -36,8 +36,8 @@ public class ChatArea extends JPanel {
 		int maxThreads = this.maxCols_ * this.maxRows_;
 		
 		// Figure out which threads need to be added and which are already displayed
-		List<Chat> threadsToAdd = new ArrayList<Chat>();
-		List<Chat> threadsToLeaveBe = new ArrayList<Chat>();
+		List<Chat> chatsToAdd = new ArrayList<Chat>();
+		List<Chat> chatsToLeaveBe = new ArrayList<Chat>();
 		Iterator<Chat> it = this.parent_.getChats().iterator();
 		for (int i = 0; i < maxThreads; i++) {
 			if (!it.hasNext()) {
@@ -46,40 +46,41 @@ public class ChatArea extends JPanel {
 			
 			Chat thread = it.next();
 			if (this.threadsDisplayed_.contains(thread)) {
-				threadsToLeaveBe.add(thread);
+				chatsToLeaveBe.add(thread);
 			} else {
-				threadsToAdd.add(thread);
+				chatsToAdd.add(thread);
 			}
 		}
 		
 		// Replace ones which need to be swapped out
 		for (int i = 0; i < maxThreads; i++) {
-			if (threadsToAdd.size() <= 0) {
+			if (chatsToAdd.size() <= 0) {
 				break;
 			}
 			
 			if (i >= this.threadsDisplayed_.size()) {
-				this.threadsDisplayed_.add(threadsToAdd.remove(0));
-			} else if (!threadsToLeaveBe.contains(this.threadsDisplayed_.get(i))) {
-				this.threadsDisplayed_.set(i, threadsToAdd.remove(0));
+				this.threadsDisplayed_.add(chatsToAdd.remove(0));
+			} else if (!chatsToLeaveBe.contains(this.threadsDisplayed_.get(i))) {
+				this.threadsDisplayed_.set(i, chatsToAdd.remove(0));
 			}
 		}
 		
 		// Redisplay
-		this.removeAll();
+		this.removeAll();		
 		this.setLayout(new GridBagLayout());
 		
+		
 		int i = 0;
-		for (Chat thread : this.threadsDisplayed_) {
+		for (Chat chat : this.threadsDisplayed_) {
 			GridBagConstraints c = new GridBagConstraints();
-			
+				
 			c.fill = GridBagConstraints.BOTH;
 			c.gridx = i % numCols;
 			c.gridy = i / numCols;
 			c.weightx = 0.5;
 			c.weighty = 0.5;
-			
-			this.add(thread, c);
+				
+			this.add(chat, c);
 			i++;
 			
 			if (i >= maxThreads) {

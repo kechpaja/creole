@@ -40,13 +40,6 @@ public class ChatListEntry extends JTextField implements MouseListener {
 	public void mousePressed(MouseEvent arg0) {
 		this.chat_.setPrioritized();
 		this.chat_.redisplayConversation();
-		//this.chat_.requestFocusInWindow();
-		//this.chat_.focusGained(null);
-		
-		// TODO figure out how to catch mouse event on chat list, and send it on immediately
-		// to corresponding entry in chat list. 
-		// TODO it's also likely that there exists a special swing component for exactly this
-		// use case, and I just need to figure out what it is. 
 	}
 
 	@Override
