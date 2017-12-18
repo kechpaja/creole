@@ -18,7 +18,7 @@ public class ChatHistoryArea extends JTextArea {
 		this.setEditable(false);
 		this.setLineWrap(true);
 		this.setWrapStyleWord(true);
-		this.addFocusListener(chat);
+		this.addMouseListener(chat);
 	}
 	
 	public void displayMessages(List<Message> messages) {

@@ -6,6 +6,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,7 @@ import backend.Message;
 import resources.Strings;
 import utils.InsertionSortList;
 
-public class Chat extends JPanel implements KeyListener, FocusListener, Comparable<Chat> {
+public class Chat extends JPanel implements KeyListener, MouseListener, Comparable<Chat> {
 	
 	/**
 	 * 
@@ -87,26 +89,16 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 	public void keyTyped(KeyEvent e) { /* Do nothing */ }
 	
 	
-	/*
-	 * Focus Listener methods
-	 */
-	
-	@Override
-	public void focusGained(FocusEvent arg0) {
-		this.setPrioritized();
-		//this.redisplayConversation();
-	}
-
-	@Override
-	public void focusLost(FocusEvent arg0) { /* Do nothing */ }
-	
-	
 	@Override
 	public int compareTo(Chat chat) {
 		// Can't just subtract, because that would mean having to safely cast a long to int. 
-		if (this.isPrioritized_ || chat.timeOfLastActivity_ < this.timeOfLastActivity_) {
+		if (this.isPrioritized_) {
 			return -1;
-		} else if (chat.isPrioritized_ || chat.timeOfLastActivity_ > this.timeOfLastActivity_) {
+		} else if (chat.isPrioritized_) {
+			return 1;
+		} else if (chat.timeOfLastActivity_ < this.timeOfLastActivity_) {
+			return -1;
+		} else if (chat.timeOfLastActivity_ > this.timeOfLastActivity_) {
 			return 1;
 		} else {
 			return 0;
@@ -140,8 +132,6 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 		this.messages_.add(message);
 	}
 	
-	// TODO do we need a method to deprioritize all? 
-	
 	protected void setPrioritized() {
 		for (Chat chat : this.chatList_.getChats()) {
 			chat.isPrioritized_ = false;
@@ -167,7 +157,7 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 		
 		this.titleField_ = new JTextField(Strings.getDefaultThreadTitle(Chat.count_));
 		this.titleField_.setEditable(false);
-		this.titleField_.addFocusListener(this);
+		this.titleField_.addMouseListener(this);
 		this.add(this.titleField_, BorderLayout.PAGE_START);
 		
 		this.historyArea_ = new ChatHistoryArea(this);
@@ -181,7 +171,7 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 		this.listEntry_ = new ChatListEntry(this); // Depends on title field being set
 		
 		// Listeners
-		this.addFocusListener(this);
+		this.addMouseListener(this);
 		
 		this.setOpaque(true);
 		this.validate();
@@ -195,4 +185,27 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 		pane.setBorder(BorderFactory.createMatteBorder(hasUpperBorder ? 5 : 0, 0, 0, 0, Color.BLUE));
 		this.add(pane, where);
 	}
+
+
+	/*
+	 * Mouse Listener methods
+	 */
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		this.setPrioritized();
+		this.redisplayConversation();
+		this.typingArea_.requestFocusInWindow();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) { /* Do nothing */ }
+
+	@Override
+	public void mouseExited(MouseEvent arg0) { /* Do nothing */ }
+
+	@Override
+	public void mousePressed(MouseEvent arg0) { /* Do nothing */ }
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) { /* Do nothing */ }
 }

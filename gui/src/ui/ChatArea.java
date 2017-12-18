@@ -30,7 +30,7 @@ public class ChatArea extends JPanel {
 	}
 	
 	protected void redisplay() {
-		//this.parent_.getChats().sort();
+		this.parent_.getChats().sort();
 		int numThreads = this.parent_.getChats().size();
 		int numCols = numThreads < this.maxCols_ ? numThreads : this.maxCols_;
 		int maxThreads = this.maxCols_ * this.maxRows_;

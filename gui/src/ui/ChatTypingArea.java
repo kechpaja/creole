@@ -15,7 +15,7 @@ public class ChatTypingArea extends JTextArea {
 		this.setLineWrap(true);
 		this.setWrapStyleWord(true);
 		this.addKeyListener(chat);
-		this.addFocusListener(chat);
+		this.addMouseListener(chat);
 	}
 
 }
