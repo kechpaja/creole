@@ -30,14 +30,15 @@ public class ChatArea extends JPanel {
 	}
 	
 	protected void redisplay() {
-		int numThreads = this.parent_.getThreads().size();
+		//this.parent_.getChats().sort();
+		int numThreads = this.parent_.getChats().size();
 		int numCols = numThreads < this.maxCols_ ? numThreads : this.maxCols_;
 		int maxThreads = this.maxCols_ * this.maxRows_;
 		
 		// Figure out which threads need to be added and which are already displayed
 		List<Chat> threadsToAdd = new ArrayList<Chat>();
 		List<Chat> threadsToLeaveBe = new ArrayList<Chat>();
-		Iterator<Chat> it = this.parent_.getThreads().iterator();
+		Iterator<Chat> it = this.parent_.getChats().iterator();
 		for (int i = 0; i < maxThreads; i++) {
 			if (!it.hasNext()) {
 				break;
@@ -86,7 +87,8 @@ public class ChatArea extends JPanel {
 			}
 		}
 		
-		this.validate();
+		this.revalidate();
+		this.repaint();
 	}
 
 }

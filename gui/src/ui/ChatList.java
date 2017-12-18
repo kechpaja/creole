@@ -35,10 +35,10 @@ public class ChatList extends JPanel implements ActionListener {
 		this.chatMap_ = new HashMap<String, Chat>();
 		
 		// Set up New Thread button
-		JButton newThreadButton = new JButton(Strings.getNewThreadButtonText());
-		newThreadButton.addActionListener(this);
-		newThreadButton.setActionCommand("new thread");
-		this.add(newThreadButton);
+		JButton newChatButton = new JButton(Strings.getNewThreadButtonText());
+		newChatButton.addActionListener(this);
+		newChatButton.setActionCommand("new thread");
+		this.add(newChatButton);
 		
 		this.chatListPanel_ = new JPanel();
 		this.add(new JScrollPane(this.chatListPanel_));
@@ -50,13 +50,14 @@ public class ChatList extends JPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("new thread")) {
-			this.addThread(new Chat(this));
+			this.createNewChat();
 		}
 	}
 	
-	protected void addThread(Chat thread) {
-		this.chats_.add(thread);
-		this.chatMap_.put(thread.getId(), thread);
+	protected void createNewChat() {
+		Chat chat = new Chat(this);
+		this.chats_.add(chat);
+		this.chatMap_.put(chat.getId(), chat);
 		this.parent_.redisplay();
 	}
 	
@@ -65,17 +66,18 @@ public class ChatList extends JPanel implements ActionListener {
 	}
 	
 	protected void redisplay() {
+		this.chats_.sort();
 		this.chatListPanel_.removeAll();
 		this.chatListPanel_.setLayout(new GridBagLayout());
 		
-		for (Chat thread : this.chats_) {
+		for (Chat chat : this.chats_) {
 			GridBagConstraints c = new GridBagConstraints();
 			
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.gridx = 0;
 			c.weightx = 1.0;
 			
-			this.chatListPanel_.add(thread.getListEntry(), c);
+			this.chatListPanel_.add(chat.getListEntry(), c);
 		}
 		
 		this.validate();
@@ -90,7 +92,19 @@ public class ChatList extends JPanel implements ActionListener {
 	}
 	
 	protected void deliver(Message message) {
-		// TODO 
+		if (!this.chatMap_.containsKey(message.getId())) {
+			this.createNewChat(); // Unrecognized message indicates that a new chat has been started
+			
+			// TODO eventually, we'll have to check against a list of chats that have been deleted, and ignore if
+			// it is one of those, but that's for the future. Or perhaps every message that can start a new chat 
+			// should be marked as such. 
+		}
+		
+		this.chatMap_.get(message.getId()).deliver(message);
+	}
+	
+	protected void redisplayConversation() {
+		this.parent_.redisplay();
 	}
 
 }

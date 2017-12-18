@@ -27,13 +27,14 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 	private static final long serialVersionUID = 6053838067760788383L;
 	private static int count_ = 0;
 	private JTextField titleField_;
-	private JTextArea chatArea_;
-	private JTextArea typingArea_;
+	private ChatHistoryArea historyArea_;
+	private ChatTypingArea typingArea_;
 	private ChatListEntry listEntry_;
 	private ChatList chatList_;
 	private String id_;
 	private long timeOfLastActivity_; // Time of last activity, in milliseconds
 	private List<String> usersInChat_;
+	private boolean isPrioritized_;
 	
 	// List of messages to be displayed
 	private InsertionSortList<Message> messages_;
@@ -95,7 +96,6 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 		this.listEntry_.setHighlighted(true);
 		this.setBorder(BorderFactory.createLineBorder(Color.CYAN, 5));
 		this.validate();
-		this.updateTimeOfLastActivity();
 	}
 
 
@@ -104,15 +104,16 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 		this.listEntry_.setHighlighted(false);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 		this.validate();
+		this.redisplayConversation();
 	}
 	
 	
 	@Override
-	public int compareTo(Chat thread) {
+	public int compareTo(Chat chat) {
 		// Can't just subtract, because that would mean having to safely cast a long to int. 
-		if (this.isFocusOwner() || thread.timeOfLastActivity_ < this.timeOfLastActivity_) {
+		if (this.isPrioritized_ || chat.timeOfLastActivity_ < this.timeOfLastActivity_) {
 			return -1;
-		} else if (thread.isFocusOwner() || thread.timeOfLastActivity_ > this.timeOfLastActivity_) {
+		} else if (chat.isPrioritized_ || chat.timeOfLastActivity_ > this.timeOfLastActivity_) {
 			return 1;
 		} else {
 			return 0;
@@ -132,13 +133,25 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 	}
 	
 	protected void redisplay() {
-		String chatAreaContents = "";
-		
-		for (Message message : this.messages_) {
-			chatAreaContents += message.getSendingUser() + ": " + message.getContent() + "\n";
+		this.historyArea_.displayMessages(this.messages_);
+	}
+	
+	protected void deliver(Message message) {
+		this.messages_.add(message);
+	}
+	
+	// TODO do we need a method to deprioritize all? 
+	
+	protected void setPrioritized() {
+		for (Chat chat : this.chatList_.getChats()) {
+			chat.isPrioritized_ = false;
 		}
 		
-		this.chatArea_.setText(chatAreaContents);
+		this.isPrioritized_ = true;
+	}
+	
+	protected void redisplayConversation() {
+		this.chatList_.redisplayConversation();
 	}
 	
 	private void updateTimeOfLastActivity() {
@@ -153,24 +166,11 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 		this.titleField_.addFocusListener(this);
 		this.add(this.titleField_, BorderLayout.PAGE_START);
 		
-		this.chatArea_ = new JTextArea(5, 3);
-		this.chatArea_.setEditable(false);
-		this.chatArea_.setLineWrap(true);
-		this.chatArea_.setWrapStyleWord(true);
-		this.chatArea_.addFocusListener(this);
-		JScrollPane chatAreaScrollPane = new JScrollPane(this.chatArea_);
-		chatAreaScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
-		this.add(chatAreaScrollPane, BorderLayout.CENTER);
+		this.historyArea_ = new ChatHistoryArea(this);
+		this.wrapInScrollPaneAndAdd(this.historyArea_, BorderLayout.CENTER, false);
 		
-		this.typingArea_ = new JTextArea(5, 3);
-		this.typingArea_.setEditable(true);
-		this.typingArea_.setLineWrap(true);
-		this.typingArea_.setWrapStyleWord(true);
-		this.typingArea_.addKeyListener(this);
-		this.typingArea_.addFocusListener(this);
-		JScrollPane typingAreaScrollPane = new JScrollPane(this.typingArea_);
-		typingAreaScrollPane.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Color.BLUE));
-		this.add(typingAreaScrollPane, BorderLayout.PAGE_END);
+		this.typingArea_ = new ChatTypingArea(this);
+		this.wrapInScrollPaneAndAdd(this.typingArea_, BorderLayout.PAGE_END, true);
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 
@@ -184,5 +184,11 @@ public class Chat extends JPanel implements KeyListener, FocusListener, Comparab
 		
 		this.updateTimeOfLastActivity();
 		this.redisplay();
+	}
+	
+	private void wrapInScrollPaneAndAdd(JTextArea area, String where, boolean hasUpperBorder) {
+		JScrollPane pane = new JScrollPane(area);
+		pane.setBorder(BorderFactory.createMatteBorder(hasUpperBorder ? 5 : 0, 0, 0, 0, Color.BLUE));
+		this.add(pane, where);
 	}
 }

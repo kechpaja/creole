@@ -20,7 +20,7 @@ public class Conversation extends JPanel {
 	private String title_;
 	private String id_;
 	
-	private ChatList threadList_;
+	private ChatList chatList_;
 	private ChatArea chatArea_;
 	private UserList userList_;
 	
@@ -31,13 +31,13 @@ public class Conversation extends JPanel {
 		this.id_ = System.currentTimeMillis() + "-" + Conversation.count_;
 		this.sender_ = sender;
 		
-		this.threadList_ = new ChatList(this);
+		this.chatList_ = new ChatList(this);
 		this.chatArea_ = new ChatArea(this);
 		this.userList_ = new UserList();
 
 		this.setLayout(new BorderLayout());
 		
-		this.add(this.threadList_, BorderLayout.LINE_START);
+		this.add(this.chatList_, BorderLayout.LINE_START);
 		this.add(this.chatArea_, BorderLayout.CENTER);
 		this.add(this.userList_, BorderLayout.LINE_END);
 		
@@ -55,16 +55,16 @@ public class Conversation extends JPanel {
 	}
 	
 	protected void redisplay() {
-		this.threadList_.redisplay();
+		this.chatList_.redisplay();
 		this.chatArea_.redisplay();
 	}
 	
-	protected InsertionSortList<Chat> getThreads() {
-		return this.threadList_.getChats();
+	protected InsertionSortList<Chat> getChats() {
+		return this.chatList_.getChats();
 	}
 	
 	protected void deliver(Message message) {
-		this.threadList_.deliver(message);
+		this.chatList_.deliver(message);
 	}
 	
 	protected Sender getSender() {

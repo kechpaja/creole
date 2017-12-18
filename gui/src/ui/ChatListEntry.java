@@ -12,12 +12,12 @@ public class ChatListEntry extends JTextField implements MouseListener {
 	 * 
 	 */
 	private static final long serialVersionUID = -1255988995929741748L;
-	private Chat thread_; 
+	private Chat chat_; 
 	
-	protected ChatListEntry(Chat thread) {
-		this.thread_ = thread;
+	protected ChatListEntry(Chat chat) {
+		this.chat_ = chat;
 		
-		this.setText(this.thread_.getTitle());
+		this.setText(this.chat_.getTitle());
 		this.setEditable(false);
 		this.addMouseListener(this);
 	}
@@ -38,7 +38,9 @@ public class ChatListEntry extends JTextField implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		this.thread_.requestFocusInWindow();
+		this.chat_.setPrioritized();
+		this.chat_.redisplayConversation();
+		this.chat_.requestFocusInWindow();
 	}
 
 	@Override
@@ -52,7 +54,8 @@ public class ChatListEntry extends JTextField implements MouseListener {
 			this.setBackground(Color.WHITE);
 		}
 		
-		this.validate();
+		this.revalidate();
+		this.repaint();
 	}
 
 }
