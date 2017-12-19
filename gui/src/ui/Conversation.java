@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 
 import backend.Message;
 import backend.SessionManager;
 import resources.Strings;
-import utils.InsertionSortList;
 
 public class Conversation extends JPanel {
 	
@@ -60,8 +60,12 @@ public class Conversation extends JPanel {
 		this.chatArea_.redisplay();
 	}
 	
-	protected InsertionSortList<Chat> getChats() {
+	protected Vector<Chat> getChats() {
 		return this.chatList_.getChats();
+	}
+	
+	protected Chat getPrioritizedChat() {
+		return this.chatList_.getPrioritizedChat();
 	}
 	
 	protected Set<String> getUsers() {

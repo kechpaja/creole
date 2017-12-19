@@ -27,7 +27,6 @@ public class ChatArea extends JPanel {
 	protected void redisplay() {
 		// TODO I'm sure it's possible to do this in a more idiomatic way, but I'll worry about that later. 
 		
-		this.parent_.getChats().sort();
 		int numThreads = this.parent_.getChats().size();
 		int numCols = numThreads < UiConfigData.getChatAreaMaxColumns() ? numThreads : UiConfigData.getChatAreaMaxColumns();
 		int maxThreads = UiConfigData.getChatAreaMaxColumns() * UiConfigData.getChatAreaMaxRows();
@@ -47,6 +46,17 @@ public class ChatArea extends JPanel {
 			} else {
 				chatsToAdd.add(thread);
 			}
+		}
+		
+		Chat prioritizedChat = this.parent_.getPrioritizedChat();
+		if (prioritizedChat != null && !chatsToLeaveBe.contains(prioritizedChat) && !chatsToAdd.contains(prioritizedChat)) {
+			if (chatsToAdd.size() > 0) {
+				chatsToAdd.remove(chatsToAdd.size() - 1);
+			} else {
+				chatsToLeaveBe.remove(chatsToLeaveBe.size() - 1);
+			}
+
+			chatsToAdd.add(prioritizedChat);
 		}
 		
 		// Replace ones which need to be swapped out

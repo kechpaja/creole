@@ -3,6 +3,7 @@ package ui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Map;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.BoxLayout;
@@ -10,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import backend.Message;
-import utils.InsertionSortList;
 
 public class ChatList extends JPanel {
 
@@ -20,13 +20,14 @@ public class ChatList extends JPanel {
 	private static final long serialVersionUID = 8408968042626016488L;
 	
 	private Conversation parent_;
-	private InsertionSortList<Chat> chats_;
+	private Vector<Chat> chats_;
 	private Map<String, Chat> chatMap_;
 	private JPanel chatListPanel_;
+	private Chat prioritizedChat_;
 	
 	protected ChatList(Conversation conversation) {
 		this.parent_ = conversation;
-		this.chats_ = new InsertionSortList<Chat>();
+		this.chats_ = new Vector<Chat>();
 		this.chatMap_ = new ConcurrentHashMap<String, Chat>();
 		
 		// Set up New Chat button
@@ -48,12 +49,11 @@ public class ChatList extends JPanel {
 		return chat;
 	}
 	
-	protected InsertionSortList<Chat> getChats() {
+	protected Vector<Chat> getChats() {
 		return this.chats_;
 	}
 	
 	protected void redisplay() {
-		this.chats_.sort();
 		this.chatListPanel_.removeAll();
 		this.chatListPanel_.setLayout(new GridBagLayout());
 		
@@ -94,6 +94,14 @@ public class ChatList extends JPanel {
 	
 	protected void redisplayConversation() {
 		this.parent_.redisplay();
+	}
+	
+	protected void setPrioritizedChat(Chat chat) {
+		this.prioritizedChat_= chat;
+	}
+	
+	protected Chat getPrioritizedChat() {
+		return this.prioritizedChat_;
 	}
 
 }

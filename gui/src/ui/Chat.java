@@ -151,7 +151,9 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		this.usersInChat_.addAll(message.getToUsers());
 		this.id_ = message.getChatId();
 		this.redisplay();
-		this.updateTimeOfLastActivity();
+		this.updateTimeOfLastActivity(); // TODO Do we need this? We don't sort anymore. 
+		this.chatList_.getChats().remove(this);
+		this.chatList_.getChats().add(this);
 	}
 	
 	protected void setPrioritized() {
@@ -160,6 +162,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		}
 		
 		this.isPrioritized_ = true;
+		this.chatList_.setPrioritizedChat(this);
 		
 		for (Chat chat : this.chatList_.getChats()) {
 			chat.redisplay();
