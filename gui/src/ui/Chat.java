@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -30,7 +32,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 	private ChatList chatList_;
 	private String id_;
 	private long timeOfLastActivity_; // in milliseconds
-	private List<String> usersInChat_;
+	private Set<String> usersInChat_;
 	private boolean isPrioritized_;
 	private InsertionSortList<Message> messages_;
 	
@@ -40,7 +42,8 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		this.chatList_ = chatList;
 		
 		// TODO actually add users to user list
-		this.usersInChat_ = new ArrayList<String>();
+		this.usersInChat_ = new HashSet<String>();
+		this.usersInChat_.add(SessionManager.getCurrentUser());
 		
 		// TODO change border color based on whether user has focused window since new messages arrived. 
 		
@@ -119,7 +122,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		return this.chatList_.getConversationId();
 	}
 	
-	protected List<String> getUsersInChat() {
+	protected Set<String> getUsersInChat() {
 		return this.usersInChat_;
 	}
 	

@@ -1,7 +1,7 @@
 package backend;
 
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -9,9 +9,9 @@ public class Sender implements Runnable {
 	
 	private class MessageFrame {
 		private Message message_;
-		private List<String> recipients_;
+		private Set<String> recipients_;
 		
-		private MessageFrame(Message message, List<String> recipients) {
+		private MessageFrame(Message message, Set<String> recipients) {
 			this.message_ = message;
 			this.recipients_ = recipients;
 		}
@@ -44,7 +44,7 @@ public class Sender implements Runnable {
 	}
 
 	
-	public void queueMessage(Message message, List<String> toUsers) {
+	public void queueMessage(Message message, Set<String> toUsers) {
 		this.sendQueue_.add(new MessageFrame(message, toUsers)); // TODO question if this is correct method
 	}
 
