@@ -4,11 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -34,10 +34,12 @@ public class Chat extends JPanel implements MouseListener {
 	private Set<String> usersInChat_;
 	private boolean isPrioritized_;
 	private InsertionSortList<Message> messages_;
+	private Vector<String> messageDisplayStrings_;
 	
 	protected Chat(ChatList chatList) {
 		this.id_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + SessionManager.getSessionId();
 		this.messages_ = new InsertionSortList<Message>();
+		this.messageDisplayStrings_ = new Vector<String>();
 		this.chatList_ = chatList;
 		
 		this.usersInChat_ = new HashSet<String>();
@@ -100,7 +102,7 @@ public class Chat extends JPanel implements MouseListener {
 	}
 	
 	protected List<String> getUsersInChatSorted() {
-		List<String> users = new ArrayList<String>();
+		List<String> users = new Vector<String>();
 		for (String user : this.getUsersInChat()) {
 			users.add(user);
 		}
@@ -115,7 +117,7 @@ public class Chat extends JPanel implements MouseListener {
 	}
 	
 	protected void redisplay() {
-		this.historyArea_.displayMessages(this.messages_);
+		this.historyArea_.setMessageDisplayStrings(this.messageDisplayStrings_);
 		
 		this.listEntry_.setHighlighted(this.isPrioritized_);
 		if (this.isPrioritized_) {
@@ -128,7 +130,8 @@ public class Chat extends JPanel implements MouseListener {
 	}
 	
 	protected void deliver(Message message) {
-		this.messages_.insert(message);
+		int index = this.messages_.insert(message);
+		this.messageDisplayStrings_.add(index, message.toString());
 		this.usersInChat_.addAll(message.getToUsers());
 		this.id_ = message.getChatId();
 		this.redisplay();

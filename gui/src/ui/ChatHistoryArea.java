@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.swing.JTextArea;
 
-import backend.Message;
-
 public class ChatHistoryArea extends JTextArea {
 	
 	/**
@@ -21,14 +19,8 @@ public class ChatHistoryArea extends JTextArea {
 		this.addMouseListener(chat);
 	}
 	
-	public void displayMessages(List<Message> messages) {
-		String chatAreaContents = "";
-		
-		for (Message message : messages) {
-			chatAreaContents += message.getSendingUser() + ": " + message.getContent() + "\n";
-		}
-		
-		this.setText(chatAreaContents);
+	public void setMessageDisplayStrings(List<String> messageDisplayStrings) {
+		this.setText(String.join("", messageDisplayStrings));
 	}
 
 }

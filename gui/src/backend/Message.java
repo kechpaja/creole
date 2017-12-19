@@ -53,6 +53,10 @@ public class Message implements Comparable<Message> {
 				+ Message.getSeparator() + this.sendingUser_ + Message.getSeparator() + this.content_ + Message.getSeparator() 
 				+ String.join(Message.getSeparator(), this.toUsers_);
 	}
+	
+	public String toString() {
+		return this.sendingUser_ + ": " + this.content_ + "\n"; // TODO consider localizing this
+	}
 
 
 	@Override
