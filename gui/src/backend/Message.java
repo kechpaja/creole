@@ -10,8 +10,7 @@ public class Message implements Comparable<Message> {
 	private String messageId_;
 	
 	public Message(String content, String sendingUser, String threadId, String conversationId) {
-		// TODO strip out all non-printing characters
-		this.content_ = content.replaceAll("" + ((char) 30), "").replaceAll("" + ((char) 31), "");
+		this.content_ = content.replaceAll("[^\\P{Cc}\\t\\r\\n]", ""); // https://stackoverflow.com/a/15520992
 		this.sendingUser_ = sendingUser;
 		this.sendTime_ = System.currentTimeMillis();
 		this.chatId_ = threadId;
