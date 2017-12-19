@@ -1,5 +1,6 @@
 package backend;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Message implements Comparable<Message> {
@@ -48,10 +49,9 @@ public class Message implements Comparable<Message> {
 	}
 	
 	public String toSendableString() {
-		char unitSeparator = (char) 31;
-		
-		return this.messageId_ + unitSeparator + this.conversationId_ + unitSeparator + this.chatId_ + unitSeparator 
-				+ this.sendingUser_ + unitSeparator + this.content_ + unitSeparator + String.join(unitSeparator + "", this.toUsers_);
+		return this.messageId_ + Message.getSeparator() + this.conversationId_ + Message.getSeparator() + this.chatId_ 
+				+ Message.getSeparator() + this.sendingUser_ + Message.getSeparator() + this.content_ + Message.getSeparator() 
+				+ String.join(Message.getSeparator(), this.toUsers_);
 	}
 
 
@@ -65,6 +65,28 @@ public class Message implements Comparable<Message> {
 		} else {
 			return 0;
 		}
+	}
+	
+	
+	public static Message fromSendableString(String messageString) {
+		String[] messageArray = messageString.split(Message.getSeparator());
+		
+		if (messageArray.length < 6) {
+			// TODO some sort of error indicating that the message was not complete
+		}
+		
+		Set<String> toUsers = new HashSet<String>();
+		for (int i = 5; i < messageArray.length; i++) {
+			toUsers.add(messageArray[i]);
+		}
+		
+		Message message = new Message(messageArray[1], messageArray[2], messageArray[3], messageArray[4], toUsers);
+		message.messageId_ = messageArray[0];
+		return message;
+	}
+	
+	private static String getSeparator() {
+		return "" + ((char) 31);
 	}
 
 }

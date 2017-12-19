@@ -32,5 +32,10 @@ public class SessionManager {
 		
 		Strings.setLocalizationLanguage("epo");
 	}
+	
+	public static void shutdown() {
+		// TODO do stuff to shut down the program
+		SessionManager.sender_.shutdown();
+	}
 
 }
