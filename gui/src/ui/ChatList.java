@@ -65,6 +65,8 @@ public class ChatList extends JPanel {
 			c.weightx = 1.0;
 			
 			this.chatListPanel_.add(chat.getListEntry(), c);
+			
+			chat.redisplay();
 		}
 		
 		this.validate();
@@ -72,6 +74,10 @@ public class ChatList extends JPanel {
 	
 	protected String getConversationId() {
 		return this.parent_.getId();
+	}
+	
+	protected Conversation getConversation() {
+		return this.parent_;
 	}
 	
 	protected void deliver(Message message) {

@@ -18,10 +18,10 @@ public abstract class Strings {
 	}
 	
 	
-	/*
-	 * Arguments:
-	 * int count - the index of the new conversation. 
-	 */
+	public static String getAddUserLabel() {
+		return Strings.strings_.getLocalizedAddUserLabel();
+	}
+	
 	public static String getDefaultConversationTitle(int count) {
 		return Strings.strings_.getLocalizedDefaultConversationTitle(count);
 	}
@@ -47,6 +47,7 @@ public abstract class Strings {
 	}
 	
 	
+	protected abstract String getLocalizedAddUserLabel();
 	protected abstract String getLocalizedDefaultConversationTitle(int count);
 	protected abstract String getLocalizedDefaultChatTitle(int count);
 	protected abstract String getLocalizedForkButtonText();

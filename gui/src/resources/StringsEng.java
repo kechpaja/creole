@@ -3,6 +3,11 @@ package resources;
 class StringsEng extends Strings {
 
 	@Override
+	protected String getLocalizedAddUserLabel() {
+		return "Add User";
+	}
+	
+	@Override
 	protected String getLocalizedDefaultConversationTitle(int count) {
 		return "Conversation " + count;
 	}

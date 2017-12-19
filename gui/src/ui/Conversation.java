@@ -1,6 +1,10 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -58,6 +62,17 @@ public class Conversation extends JPanel {
 	
 	protected InsertionSortList<Chat> getChats() {
 		return this.chatList_.getChats();
+	}
+	
+	protected Set<String> getUsers() {
+		return this.userList_.getUsers();
+	}
+	
+	protected List<String> getUsersSorted() {
+		List<String> users = new ArrayList<String>();
+		users.addAll(this.getUsers());
+		users.sort(Comparator.comparing((String x) -> x));
+		return users;
 	}
 	
 	protected void deliver(Message message) {

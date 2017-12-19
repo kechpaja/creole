@@ -4,9 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -122,8 +120,16 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		return this.chatList_.getConversationId();
 	}
 	
+	protected Conversation getConversation() {
+		return this.chatList_.getConversation();
+	}
+	
 	protected Set<String> getUsersInChat() {
 		return this.usersInChat_;
+	}
+	
+	protected void addUser(String user) {
+		this.usersInChat_.add(user);
 	}
 	
 	protected void redisplay() {
@@ -135,6 +141,8 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		} else {
 			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 		}
+		
+		this.header_.redisplay();
 	}
 	
 	protected void deliver(Message message) {
