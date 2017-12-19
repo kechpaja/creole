@@ -29,7 +29,7 @@ public class ChatListEntry extends JTextField implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		this.chat_.mouseClicked(arg0); // TODO works well enough for now
+		this.chat_.mouseClicked(arg0);
 	}
 
 	@Override public void mouseEntered(MouseEvent arg0) { /* Do nothing */ }

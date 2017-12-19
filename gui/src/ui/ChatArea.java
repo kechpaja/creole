@@ -1,7 +1,6 @@
 package ui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +29,8 @@ public class ChatArea extends JPanel {
 	}
 	
 	protected void redisplay() {
+		// TODO I'm sure it's possible to do this in a more idiomatic way, but I'll worry about that later. 
+		
 		this.parent_.getChats().sort();
 		int numThreads = this.parent_.getChats().size();
 		int numCols = numThreads < this.maxCols_ ? numThreads : this.maxCols_;
@@ -66,26 +67,20 @@ public class ChatArea extends JPanel {
 		}
 		
 		// Redisplay
-		this.removeAll();		
-		this.setLayout(new GridBagLayout());
+		this.removeAll();
 		
+		if (numCols == 0) {
+			return;
+		}
 		
-		int i = 0;
+		int numRows = (this.threadsDisplayed_.size() - 1)/numCols + 1;
+		if (numRows < 1) {
+			numRows = 1;
+		}
+		this.setLayout(new GridLayout(numRows, numCols));
+		
 		for (Chat chat : this.threadsDisplayed_) {
-			GridBagConstraints c = new GridBagConstraints();
-				
-			c.fill = GridBagConstraints.BOTH;
-			c.gridx = i % numCols;
-			c.gridy = i / numCols;
-			c.weightx = 0.5;
-			c.weighty = 0.5;
-				
-			this.add(chat, c);
-			i++;
-			
-			if (i >= maxThreads) {
-				break;
-			}
+			this.add(chat);
 		}
 		
 		this.revalidate();
