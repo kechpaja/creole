@@ -139,6 +139,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 	
 	protected void deliver(Message message) {
 		this.messages_.add(message);
+		this.usersInChat_.addAll(message.getToUsers());
 		this.redisplay();
 		this.updateTimeOfLastActivity();
 	}

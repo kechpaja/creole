@@ -40,10 +40,15 @@ public class ChatTypingArea extends JTextArea implements KeyListener {
 				this.append("\n");
 			} else {
 				if (!this.getText().equals("")) {
-					Message message = new Message(this.getText(), SessionManager.getCurrentUser(), this.chat_.getId(), this.chat_.getConversationId());
+					Message message = new Message(
+											this.getText(), 
+											SessionManager.getCurrentUser(), 
+											this.chat_.getId(), 
+											this.chat_.getConversationId(), 
+											this.chat_.getUsersInChat());
 					this.setText("");
 					this.chat_.deliver(message);
-					SessionManager.getSender().queueMessage(message, this.chat_.getUsersInChat());
+					SessionManager.getSender().queueMessage(message);
 				}
 				
 				e.consume();

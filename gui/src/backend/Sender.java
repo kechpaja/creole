@@ -1,51 +1,21 @@
 package backend;
 
-import java.util.Iterator;
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Sender implements Runnable {
 	
-	private class MessageFrame {
-		private Message message_;
-		private Set<String> recipients_;
-		
-		private MessageFrame(Message message, Set<String> recipients) {
-			this.message_ = message;
-			this.recipients_ = recipients;
-		}
-		
-		private String toSendableString() {
-			Iterator<String> it = this.recipients_.iterator();
-			String acc = "";
-			while (it.hasNext()) {
-				acc += it.next();
-				
-				if (it.hasNext()) {
-					acc += ((char) 31); // Unit separator
-				}
-			}
-			
-			return acc + ((char) 30) + this.message_.toSendableString();
-		}
-		
-		private Message getMessage() {
-			return this.message_;
-		}
-	}
-	
-	private BlockingQueue<MessageFrame> sendQueue_;
+	private BlockingQueue<Message> sendQueue_;
 	private NetworkUtilities networkUtilities_;
 	
 	public Sender(NetworkUtilities networkUtilities) {
-		this.sendQueue_ = new LinkedBlockingQueue<MessageFrame>();
+		this.sendQueue_ = new LinkedBlockingQueue<Message>();
 		this.networkUtilities_ = networkUtilities;
 	}
 
 	
-	public void queueMessage(Message message, Set<String> toUsers) {
-		this.sendQueue_.add(new MessageFrame(message, toUsers)); // TODO question if this is correct method
+	public void queueMessage(Message message) {
+		this.sendQueue_.add(message); // TODO question if this is correct method
 	}
 
 	@Override
@@ -53,12 +23,12 @@ public class Sender implements Runnable {
 		// TODO figure out how to shut down gracefully
 		while (true) {
 			try {
-				MessageFrame messageFrame = this.sendQueue_.take();
-				String messageToServer = "send" + ((char) 29) + messageFrame.toSendableString();
+				Message message = this.sendQueue_.take();
+				String messageToServer = "send" + ((char) 30) + message.toSendableString();
 				
 				String[] response = this.networkUtilities_.sendToServer(messageToServer).split("" + ((char) 29));
 				
-				if (!response[0].equals("sent") || response.length < 2 || !response[1].equals(messageFrame.getMessage().getId())) {
+				if (!response[0].equals("sent") || response.length < 2 || !response[1].equals(message.getId())) {
 					// TODO various failure cases
 				}
 			} catch (InterruptedException e) {
