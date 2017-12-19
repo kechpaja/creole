@@ -58,8 +58,6 @@ public class Window extends JFrame implements ActionListener {
 	
 
 	public static void main(String[] args) {
-		Strings.setLocalizationLanguage("epo"); // TODO read this from config file somewhere
-		
 		Window window = new Window();
 		window.init();
 	}

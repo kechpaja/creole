@@ -41,7 +41,6 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		this.messages_ = new InsertionSortList<Message>();
 		this.chatList_ = chatList;
 		
-		// TODO actually add users to user list
 		this.usersInChat_ = new HashSet<String>();
 		this.usersInChat_.add(SessionManager.getCurrentUser());
 		
@@ -60,7 +59,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 
-		this.listEntry_ = new ChatListEntry(this); // Depends on title field being set
+		this.listEntry_ = new ChatListEntry(this);
 		
 		// Listeners
 		this.addMouseListener(this);

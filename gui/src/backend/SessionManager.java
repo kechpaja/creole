@@ -1,21 +1,36 @@
 package backend;
 
+import resources.Strings;
+
 public class SessionManager {
 	
+	// Static information about current session
+	private static String currentUser_;
+	private static String sessionId_;
+	private static Sender sender_;
+	
+	
 	public static String getCurrentUser() {
-		return "kechpaja"; // TODO actually write this
+		return SessionManager.currentUser_;
 	}
 	
 	public static String getSessionId() {
-		return "sessionID"; // TODO actually do this
+		return SessionManager.sessionId_;
 	}
 	
 	public static Sender getSender() {
-		return new Sender(null); // TODO actually do this
+		return SessionManager.sender_;
 	}
 	
 	public static void init() {
 		// TODO set everything up. Take args if necessary. 
+		// Everything currenly here is just for testing. 
+		
+		SessionManager.currentUser_ = "kechpaja";
+		SessionManager.sessionId_ = "sessionID";
+		SessionManager.sender_ = new Sender(null);
+		
+		Strings.setLocalizationLanguage("epo");
 	}
 
 }
