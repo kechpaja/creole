@@ -34,6 +34,9 @@ public class SessionManager {
 		SessionManager.sender_ = new Sender("localhost", 1234); // TODO get this info from somewhere
 		SessionManager.receiver_ = new Receiver(conversations, "localhost", 1234);
 		
+		SessionManager.launchThread(SessionManager.sender_);
+		SessionManager.launchThread(SessionManager.receiver_);
+		
 		Strings.setLocalizationLanguage("epo");
 	}
 	
@@ -41,6 +44,11 @@ public class SessionManager {
 		// TODO do stuff to shut down the program
 		SessionManager.sender_.shutdown();
 		SessionManager.receiver_.shutdown();
+	}
+	
+	private static void launchThread(Runnable runnable) {
+		Thread thread = new Thread(runnable);
+		thread.start();
 	}
 
 }
