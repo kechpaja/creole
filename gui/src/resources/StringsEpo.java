@@ -14,7 +14,7 @@ class StringsEpo extends Strings {
 	
 	@Override
 	protected String getLocalizedForkButtonText() {
-		return "Forku"; // TODO I'm really not sure
+		return "Forku";
 	}
 
 	@Override
