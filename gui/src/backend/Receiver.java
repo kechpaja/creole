@@ -18,6 +18,7 @@ public class Receiver implements Runnable {
 	public void run() {
 		while (!this.shutdownFlag_) {
 			this.conversations_.deliver(this.networkUtilities_.fetchUnseenMessages());
+			// TODO all hashMaps need to be ConcurrentHashMaps
 		}
 	}
 	

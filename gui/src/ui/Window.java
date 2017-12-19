@@ -34,10 +34,15 @@ public class Window extends JFrame implements ActionListener {
 		JPanel panel = new JPanel();
 		panel.add(newConversationButton);
 		
-		SessionManager.init();
+		UiConfigData.init();
 		
 		// TODO load up existing data, if it's there
 		this.conversations_ = new ConversationsPanel();
+		
+
+		SessionManager.init(this.conversations_);
+		
+		// TODO call shutdown on SessionManager when necessary
 		
 		
 		panel.add(this.conversations_);

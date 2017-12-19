@@ -1,6 +1,7 @@
 package backend;
 
 import resources.Strings;
+import ui.ConversationsPanel;
 
 public class SessionManager {
 	
@@ -8,6 +9,7 @@ public class SessionManager {
 	private static String currentUser_;
 	private static String sessionId_;
 	private static Sender sender_;
+	private static Receiver receiver_;
 	
 	
 	public static String getCurrentUser() {
@@ -22,13 +24,16 @@ public class SessionManager {
 		return SessionManager.sender_;
 	}
 	
-	public static void init() {
+	public static void init(ConversationsPanel conversations) {
 		// TODO set everything up. Take args if necessary. 
 		// Everything currenly here is just for testing. 
 		
 		SessionManager.currentUser_ = "kechpaja";
 		SessionManager.sessionId_ = "sessionID";
-		SessionManager.sender_ = new Sender(null);
+		
+		NetworkUtilities networkUtilities = new NetworkUtilities();
+		SessionManager.sender_ = new Sender(networkUtilities);
+		SessionManager.receiver_ = new Receiver(conversations, networkUtilities);
 		
 		Strings.setLocalizationLanguage("epo");
 	}
@@ -36,6 +41,7 @@ public class SessionManager {
 	public static void shutdown() {
 		// TODO do stuff to shut down the program
 		SessionManager.sender_.shutdown();
+		SessionManager.receiver_.shutdown();
 	}
 
 }
