@@ -15,14 +15,10 @@ public class ChatArea extends JPanel {
 	private static final long serialVersionUID = -5349808453529387897L;
 	private Conversation parent_;
 	private List<Chat> threadsDisplayed_;
-	private int maxCols_;
-	private int maxRows_;
 	
 	protected ChatArea(Conversation parent) {
 		this.parent_ = parent;
 		this.threadsDisplayed_ = new ArrayList<Chat>();
-		this.maxCols_ = 3; // TODO set from config file
-		this.maxRows_ = 2; // TODO set from config file
 		
 		this.redisplay();
 		this.setOpaque(true);
@@ -33,8 +29,8 @@ public class ChatArea extends JPanel {
 		
 		this.parent_.getChats().sort();
 		int numThreads = this.parent_.getChats().size();
-		int numCols = numThreads < this.maxCols_ ? numThreads : this.maxCols_;
-		int maxThreads = this.maxCols_ * this.maxRows_;
+		int numCols = numThreads < UiConfigData.getChatAreaMaxColumns() ? numThreads : UiConfigData.getChatAreaMaxColumns();
+		int maxThreads = UiConfigData.getChatAreaMaxColumns() * UiConfigData.getChatAreaMaxRows();
 		
 		// Figure out which threads need to be added and which are already displayed
 		List<Chat> chatsToAdd = new ArrayList<Chat>();
