@@ -89,7 +89,7 @@ public class ChatList extends JPanel {
 			// should be marked as such. 
 		}
 		
-		this.chatMap_.get(message.getId()).deliver(message);
+		this.chatMap_.get(message.getChatId()).deliver(message);
 	}
 	
 	protected void redisplayConversation() {
