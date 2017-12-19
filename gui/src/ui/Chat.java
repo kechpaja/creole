@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import resources.Strings;
 import backend.Message;
 import backend.SessionManager;
 import utils.InsertionSortList;
@@ -75,10 +76,14 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 			forked.usersInChat_.add(user);
 		}
 		
-		// TODO consider including a reference to the chat that we are forked from, and a button to take the user there. 
-		// That is a goal for later, though. 
+		forked.setTitle(Strings.getForkedChatTitle(this.getTitle()));
 		
 		return forked;
+	}
+	
+	public void setTitle(String title) {
+		this.header_.setTitle(title);
+		this.listEntry_.setText(title);
 	}
 	
 	

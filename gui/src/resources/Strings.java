@@ -33,6 +33,10 @@ public abstract class Strings {
 	public static String getForkButtonText() {
 		return Strings.strings_.getLocalizedForkButtonText();
 	}
+	
+	public static String getForkedChatTitle(String originalChatTitle) {
+		return Strings.strings_.getLocalizedForkedChatTitle(originalChatTitle);
+	}
 
 	public static String getNewConversationButtonText() {
 		return Strings.strings_.getLocalizedNewConversationButtonText();
@@ -46,6 +50,7 @@ public abstract class Strings {
 	protected abstract String getLocalizedDefaultConversationTitle(int count);
 	protected abstract String getLocalizedDefaultChatTitle(int count);
 	protected abstract String getLocalizedForkButtonText();
+	protected abstract String getLocalizedForkedChatTitle(String originalChatTitle);
 	protected abstract String getLocalizedNewConversationButtonText();
 	protected abstract String getLocalizedNewChatButtonText();
 

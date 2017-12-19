@@ -16,6 +16,11 @@ class StringsEpo extends Strings {
 	protected String getLocalizedForkButtonText() {
 		return "Forku";
 	}
+	
+	@Override
+	protected String getLocalizedForkedChatTitle(String originalChatTitle) {
+		return "Nova Fadeno (forkita de: " + originalChatTitle + ")";
+	}
 
 	@Override
 	protected String getLocalizedNewConversationButtonText() {

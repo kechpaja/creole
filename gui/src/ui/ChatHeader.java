@@ -22,5 +22,9 @@ public class ChatHeader extends JPanel {
 	public String getTitle() {
 		return this.title_.getText();
 	}
+	
+	public void setTitle(String title) {
+		this.title_.setText(title);
+	}
 
 }
