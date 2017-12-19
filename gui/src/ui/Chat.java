@@ -19,7 +19,7 @@ import backend.Message;
 import backend.SessionManager;
 import utils.InsertionSortList;
 
-public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
+public class Chat extends JPanel implements MouseListener {
 	
 	/**
 	 * 
@@ -31,7 +31,6 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 	private ChatListEntry listEntry_;
 	private ChatList chatList_;
 	private String id_;
-	private long timeOfLastActivity_; // in milliseconds
 	private Set<String> usersInChat_;
 	private boolean isPrioritized_;
 	private InsertionSortList<Message> messages_;
@@ -67,7 +66,6 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		this.setOpaque(true);
 		this.validate();
 		
-		this.updateTimeOfLastActivity();
 		this.redisplay();
 	}
 	
@@ -79,23 +77,6 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		}
 		
 		return forked;
-	}
-	
-	
-	@Override
-	public int compareTo(Chat chat) {
-		// Can't just subtract, because that would mean having to safely cast a long to int. 
-		if (this.isPrioritized_) {
-			return -1;
-		} else if (chat.isPrioritized_) {
-			return 1;
-		} else if (chat.timeOfLastActivity_ < this.timeOfLastActivity_) {
-			return -1;
-		} else if (chat.timeOfLastActivity_ > this.timeOfLastActivity_) {
-			return 1;
-		} else {
-			return 0;
-		}
 	}
 	
 	protected ChatListEntry getListEntry() {
@@ -151,9 +132,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		this.usersInChat_.addAll(message.getToUsers());
 		this.id_ = message.getChatId();
 		this.redisplay();
-		this.updateTimeOfLastActivity(); // TODO Do we need this? We don't sort anymore. 
-		this.chatList_.getChats().remove(this);
-		this.chatList_.getChats().add(this);
+		this.chatList_.bumpToFront(this);
 	}
 	
 	protected void setPrioritized() {
@@ -167,10 +146,6 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		for (Chat chat : this.chatList_.getChats()) {
 			chat.redisplay();
 		}
-	}
-	
-	private void updateTimeOfLastActivity() {
-		this.timeOfLastActivity_ = System.currentTimeMillis();
 	}
 	
 	private void wrapInScrollPaneAndAdd(JTextArea area, String where, boolean hasUpperBorder) {

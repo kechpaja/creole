@@ -103,5 +103,10 @@ public class ChatList extends JPanel {
 	protected Chat getPrioritizedChat() {
 		return this.prioritizedChat_;
 	}
+	
+	protected void bumpToFront(Chat chat) {
+		this.chats_.remove(chat);
+		this.chats_.add(chat);
+	}
 
 }
