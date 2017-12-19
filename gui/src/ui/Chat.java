@@ -2,8 +2,6 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ import backend.SessionManager;
 import resources.Strings;
 import utils.InsertionSortList;
 
-public class Chat extends JPanel implements KeyListener, MouseListener, Comparable<Chat> {
+public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 	
 	/**
 	 * 
@@ -33,11 +31,9 @@ public class Chat extends JPanel implements KeyListener, MouseListener, Comparab
 	private ChatListEntry listEntry_;
 	private ChatList chatList_;
 	private String id_;
-	private long timeOfLastActivity_; // Time of last activity, in milliseconds
+	private long timeOfLastActivity_; // in milliseconds
 	private List<String> usersInChat_;
 	private boolean isPrioritized_;
-	
-	// List of messages to be displayed
 	private InsertionSortList<Message> messages_;
 	
 	protected Chat(ChatList chatList) {
@@ -65,38 +61,6 @@ public class Chat extends JPanel implements KeyListener, MouseListener, Comparab
 		
 		return forked;
 	}
-	
-	
-	/*
-	 * Key Listener Methods
-	 */
-	
-	@Override
-	public void keyReleased(KeyEvent e) { /* Do nothing */ }
-	
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (e.isShiftDown()) {
-				this.typingArea_.append("\n");
-			} else {
-				if (!this.typingArea_.getText().equals("")) {
-					Message message = new Message(this.typingArea_.getText(), SessionManager.getCurrentUser(), this.id_, this.chatList_.getConversationId());
-					this.typingArea_.setText("");
-					this.messages_.add(message);
-					this.chatList_.getSender().queueMessage(message, this.usersInChat_);
-					this.redisplay();
-				}
-				
-				e.consume();
-			}
-		}
-		
-		this.updateTimeOfLastActivity();
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) { /* Do nothing */ }
 	
 	
 	@Override
@@ -127,6 +91,14 @@ public class Chat extends JPanel implements KeyListener, MouseListener, Comparab
 		return this.id_;
 	}
 	
+	protected String getConversationId() {
+		return this.chatList_.getConversationId();
+	}
+	
+	protected List<String> getUsersInChat() {
+		return this.usersInChat_;
+	}
+	
 	protected void redisplay() {
 		this.historyArea_.displayMessages(this.messages_);
 		
@@ -140,6 +112,8 @@ public class Chat extends JPanel implements KeyListener, MouseListener, Comparab
 	
 	protected void deliver(Message message) {
 		this.messages_.add(message);
+		this.redisplay();
+		this.updateTimeOfLastActivity();
 	}
 	
 	protected void setPrioritized() {

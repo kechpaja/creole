@@ -9,5 +9,9 @@ public class SessionManager {
 	public static String getSessionId() {
 		return "sessionID"; // TODO actually do this
 	}
+	
+	public static Sender getSender() {
+		return new Sender(null); // TODO actually do this
+	}
 
 }
