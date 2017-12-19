@@ -17,9 +17,14 @@ public class ChatListEntry extends JTextField implements MouseListener {
 	protected ChatListEntry(Chat chat) {
 		this.chat_ = chat;
 		
-		this.setText(this.chat_.getTitle());
 		this.setEditable(false);
 		this.addMouseListener(this);
+		
+		this.redisplay();
+	}
+	
+	public void redisplay() {
+		this.setText(String.join(", ", this.chat_.getUsersInChatSorted()));
 	}
 
 	

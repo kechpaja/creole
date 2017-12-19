@@ -16,23 +16,22 @@ public class ChatHeader extends JPanel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = -7760685930390879542L;
-	private ChatTitle title_;
 	private ForkButton forkButton_;
 	private JComboBox<String> userSelectMenu_;
 	private JTextField userList_;
 	private Chat chat_;
 	
 	public ChatHeader(Chat chat) {
-		this.title_ = new ChatTitle(chat);
 		this.forkButton_ = new ForkButton(chat);
 		this.userSelectMenu_ = new JComboBox<String>();
-		this.userList_ = new JTextField();
+		this.userList_ = new JTextField(); // TODO should be its own class, with access to chat and thus users and tags
 		this.chat_ = chat;
+		
+		this.userList_.setEditable(false);
 		
 		this.setLayout(new BorderLayout());
 		
 		this.add(this.forkButton_, BorderLayout.LINE_START);
-		//this.add(this.title_, BorderLayout.CENTER);
 		this.add(this.userSelectMenu_, BorderLayout.CENTER);
 		this.add(this.userList_, BorderLayout.PAGE_END);
 		
@@ -44,16 +43,8 @@ public class ChatHeader extends JPanel implements ActionListener {
 		this.validate();
 	}
 	
-	public String getTitle() {
-		return this.title_.getText();
-	}
-	
-	public void setTitle(String title) {
-		this.title_.setText(title);
-	}
-	
 	public void updateUserList() {
-		this.userList_.setText(String.join(" ", this.chat_.getUsersInChat()));
+		this.userList_.setText(String.join(", ", this.chat_.getUsersInChatSorted()));
 	}
 	
 	// TODO eventually, this method will be called from an action listener, most likely. 
@@ -77,7 +68,6 @@ public class ChatHeader extends JPanel implements ActionListener {
 		String userToAdd = (String) this.userSelectMenu_.getSelectedItem();
 		if (userToAdd != null && !userToAdd.equals("") && !userToAdd.equals(Strings.getAddUserLabel() + "\n")) {
 			this.chat_.addUser(userToAdd);
-			this.updateUserList();
 			this.userSelectMenu_.setSelectedIndex(0);
 		}
 	}

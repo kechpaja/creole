@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -12,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import resources.Strings;
 import backend.Message;
 import backend.SessionManager;
 import utils.InsertionSortList;
@@ -77,14 +79,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 			forked.usersInChat_.add(user);
 		}
 		
-		forked.setTitle(Strings.getForkedChatTitle(this.getTitle()));
-		
 		return forked;
-	}
-	
-	public void setTitle(String title) {
-		this.header_.setTitle(title);
-		this.listEntry_.setText(title);
 	}
 	
 	
@@ -102,10 +97,6 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		} else {
 			return 0;
 		}
-	}
-	
-	protected String getTitle() {
-		return this.header_.getTitle();
 	}
 	
 	protected ChatListEntry getListEntry() {
@@ -128,8 +119,19 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		return this.usersInChat_;
 	}
 	
+	protected List<String> getUsersInChatSorted() {
+		List<String> users = new ArrayList<String>();
+		for (String user : this.getUsersInChat()) {
+			users.add(user);
+		}
+		users.sort(Comparator.comparing((String x) -> x));
+		return users;
+	}
+	
 	protected void addUser(String user) {
 		this.usersInChat_.add(user);
+		this.redisplay();
+		this.listEntry_.redisplay();
 	}
 	
 	protected void redisplay() {
