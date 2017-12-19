@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.swing.JTabbedPane;
 
 import backend.Message;
-import backend.Sender;
 
 public class ConversationsPanel extends JTabbedPane {
 
@@ -19,12 +18,10 @@ public class ConversationsPanel extends JTabbedPane {
 	
 	private List<Conversation> conversations_;
 	private Map<String, Conversation> conversationMap_;
-	private Sender sender_;
 	
-	protected ConversationsPanel(Sender sender) {
+	protected ConversationsPanel() {
 		this.conversations_ = new ArrayList<Conversation>();
 		this.conversationMap_ = new HashMap<String, Conversation>();
-		this.sender_ = sender;
 	}
 	
 	
@@ -40,7 +37,7 @@ public class ConversationsPanel extends JTabbedPane {
 	
 	
 	protected Conversation createNewConversation() {
-		Conversation conversation = new Conversation(this.sender_);
+		Conversation conversation = new Conversation();
 		this.conversations_.add(conversation);
 		this.conversationMap_.put(conversation.getId(), conversation);
 		this.addConversation(conversation);

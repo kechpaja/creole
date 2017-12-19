@@ -13,5 +13,9 @@ public class SessionManager {
 	public static Sender getSender() {
 		return new Sender(null); // TODO actually do this
 	}
+	
+	public static void init() {
+		// TODO set everything up. Take args if necessary. 
+	}
 
 }

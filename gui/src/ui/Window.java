@@ -8,8 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import backend.NetworkUtilities;
-import backend.Sender;
+import backend.SessionManager;
 import resources.Strings;
 
 public class Window extends JFrame implements ActionListener {
@@ -20,7 +19,6 @@ public class Window extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -808477151995604656L;
 	
 	private ConversationsPanel conversations_ = null;
-	private Sender sender_ = null;
 
 	/*
 	 * Initialize the window. 
@@ -28,7 +26,6 @@ public class Window extends JFrame implements ActionListener {
 	private void init() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		// Handle setting up the "New Conversation" button TODO localize
 		JButton newConversationButton = new JButton(Strings.getNewConversationButtonText());
 		newConversationButton.addActionListener(this);
 		newConversationButton.setActionCommand("new conversation");
@@ -37,15 +34,10 @@ public class Window extends JFrame implements ActionListener {
 		JPanel panel = new JPanel();
 		panel.add(newConversationButton);
 		
-		
-		// TODO consider wrapping all of the backend stuff into one class?
-		NetworkUtilities networkUtilities = new NetworkUtilities();
-
-		// TODO initialize sender threads
-		this.sender_ = new Sender(networkUtilities);
+		SessionManager.init();
 		
 		// TODO load up existing data, if it's there
-		this.conversations_ = new ConversationsPanel(this.sender_);
+		this.conversations_ = new ConversationsPanel();
 		
 		
 		panel.add(this.conversations_);

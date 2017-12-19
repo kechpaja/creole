@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import backend.Message;
-import backend.Sender;
 import utils.InsertionSortList;
 
 public class ChatList extends JPanel {
@@ -73,10 +72,6 @@ public class ChatList extends JPanel {
 	
 	protected String getConversationId() {
 		return this.parent_.getId();
-	}
-	
-	protected Sender getSender() {
-		return this.parent_.getSender();
 	}
 	
 	protected void deliver(Message message) {

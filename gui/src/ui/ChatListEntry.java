@@ -32,17 +32,10 @@ public class ChatListEntry extends JTextField implements MouseListener {
 		this.chat_.mouseClicked(arg0); // TODO works well enough for now
 	}
 
-	@Override
-	public void mouseEntered(MouseEvent arg0) { /* Do nothing */ }
-
-	@Override
-	public void mouseExited(MouseEvent arg0) { /* Do nothing */ }
-
-	@Override
-	public void mousePressed(MouseEvent arg0) { /*  Do nothing */ }
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) { /* Do nothing */ }
+	@Override public void mouseEntered(MouseEvent arg0) { /* Do nothing */ }
+	@Override public void mouseExited(MouseEvent arg0) { /* Do nothing */ }
+	@Override public void mousePressed(MouseEvent arg0) { /*  Do nothing */ }
+	@Override public void mouseReleased(MouseEvent arg0) { /* Do nothing */ }
 	
 	
 	protected void setHighlighted(boolean highlighted) {

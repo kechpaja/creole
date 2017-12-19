@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import backend.Message;
-import backend.Sender;
 import backend.SessionManager;
 import resources.Strings;
 import utils.InsertionSortList;
@@ -25,12 +24,9 @@ public class Conversation extends JPanel {
 	private ChatArea chatArea_;
 	private UserList userList_;
 	
-	private Sender sender_;
-	
-	protected Conversation(Sender sender) {
+	protected Conversation() {
 		this.title_ = Strings.getDefaultConversationTitle(count_++);
 		this.id_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + Conversation.count_;
-		this.sender_ = sender;
 		
 		this.chatList_ = new ChatList(this);
 		this.chatArea_ = new ChatArea(this);
@@ -66,9 +62,5 @@ public class Conversation extends JPanel {
 	
 	protected void deliver(Message message) {
 		this.chatList_.deliver(message);
-	}
-	
-	protected Sender getSender() {
-		return this.sender_;
 	}
 }
