@@ -11,11 +11,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import backend.Message;
 import backend.SessionManager;
-import resources.Strings;
 import utils.InsertionSortList;
 
 public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
@@ -24,8 +22,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 	 * 
 	 */
 	private static final long serialVersionUID = 6053838067760788383L;
-	private static int count_ = 0;
-	private JTextField titleField_;
+	private ChatHeader header_;
 	private ChatHistoryArea historyArea_;
 	private ChatTypingArea typingArea_;
 	private ChatListEntry listEntry_;
@@ -37,7 +34,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 	private InsertionSortList<Message> messages_;
 	
 	protected Chat(ChatList chatList) {
-		this.id_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + Chat.count_++;
+		this.id_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + SessionManager.getSessionId();
 		this.messages_ = new InsertionSortList<Message>();
 		this.chatList_ = chatList;
 		
@@ -80,7 +77,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 	}
 	
 	protected String getTitle() {
-		return this.titleField_.getText();
+		return this.header_.getTitle();
 	}
 	
 	protected ChatListEntry getListEntry() {
@@ -128,10 +125,6 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		}
 	}
 	
-	protected void redisplayConversation() {
-		this.chatList_.redisplayConversation();
-	}
-	
 	private void updateTimeOfLastActivity() {
 		this.timeOfLastActivity_ = System.currentTimeMillis();
 	}
@@ -139,14 +132,8 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 	private void init() {
 		this.setLayout(new BorderLayout());
 		
-		this.titleField_ = new JTextField(Strings.getDefaultChatTitle(Chat.count_));
-		this.titleField_.setEditable(false);
-		this.titleField_.addMouseListener(this);
-		
-		JPanel topPanel = new JPanel();
-		topPanel.add(this.titleField_);
-		topPanel.add(new ForkButton(this));
-		this.add(topPanel, BorderLayout.PAGE_START);
+		this.header_ = new ChatHeader(this);
+		this.add(this.header_, BorderLayout.PAGE_START);
 		
 		this.historyArea_ = new ChatHistoryArea(this);
 		this.wrapInScrollPaneAndAdd(this.historyArea_, BorderLayout.CENTER, false);
@@ -181,7 +168,7 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		this.setPrioritized();
-		this.redisplayConversation();
+		this.chatList_.redisplayConversation();
 		this.typingArea_.requestFocusInWindow();
 	}
 
