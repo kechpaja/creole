@@ -43,7 +43,29 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		
 		// TODO change border color based on whether user has focused window since new messages arrived. 
 		
-		this.init();
+		this.setLayout(new BorderLayout());
+		
+		this.header_ = new ChatHeader(this);
+		this.add(this.header_, BorderLayout.PAGE_START);
+		
+		this.historyArea_ = new ChatHistoryArea(this);
+		this.wrapInScrollPaneAndAdd(this.historyArea_, BorderLayout.CENTER, false);
+		
+		this.typingArea_ = new ChatTypingArea(this);
+		this.wrapInScrollPaneAndAdd(this.typingArea_, BorderLayout.PAGE_END, true);
+		
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+
+		this.listEntry_ = new ChatListEntry(this); // Depends on title field being set
+		
+		// Listeners
+		this.addMouseListener(this);
+		
+		this.setOpaque(true);
+		this.validate();
+		
+		this.updateTimeOfLastActivity();
+		this.redisplay();
 	}
 	
 	
@@ -127,32 +149,6 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 	
 	private void updateTimeOfLastActivity() {
 		this.timeOfLastActivity_ = System.currentTimeMillis();
-	}
-	
-	private void init() {
-		this.setLayout(new BorderLayout());
-		
-		this.header_ = new ChatHeader(this);
-		this.add(this.header_, BorderLayout.PAGE_START);
-		
-		this.historyArea_ = new ChatHistoryArea(this);
-		this.wrapInScrollPaneAndAdd(this.historyArea_, BorderLayout.CENTER, false);
-		
-		this.typingArea_ = new ChatTypingArea(this);
-		this.wrapInScrollPaneAndAdd(this.typingArea_, BorderLayout.PAGE_END, true);
-		
-		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-
-		this.listEntry_ = new ChatListEntry(this); // Depends on title field being set
-		
-		// Listeners
-		this.addMouseListener(this);
-		
-		this.setOpaque(true);
-		this.validate();
-		
-		this.updateTimeOfLastActivity();
-		this.redisplay();
 	}
 	
 	private void wrapInScrollPaneAndAdd(JTextArea area, String where, boolean hasUpperBorder) {
