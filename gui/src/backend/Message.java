@@ -3,6 +3,8 @@ package backend;
 import java.util.HashSet;
 import java.util.Set;
 
+import utils.Escaping;
+
 public class Message implements Comparable<Message> {
 	
 	private String content_;
@@ -49,9 +51,8 @@ public class Message implements Comparable<Message> {
 	}
 	
 	public String toSendableString() {
-		return this.messageId_ + Message.getSeparator() + this.conversationId_ + Message.getSeparator() + this.chatId_ 
-				+ Message.getSeparator() + this.sendingUser_ + Message.getSeparator() + this.content_ + Message.getSeparator() 
-				+ String.join(Message.getSeparator(), this.toUsers_);
+		return this.messageId_ + ":" + this.conversationId_ + ":" + this.chatId_ + ":" + this.sendingUser_  + ":" 
+				+ Escaping.escape(this.content_) + ":" + String.join(":", this.toUsers_);
 	}
 	
 	public String toString() {
@@ -73,7 +74,7 @@ public class Message implements Comparable<Message> {
 	
 	
 	public static Message fromSendableString(String messageString) {
-		String[] messageArray = messageString.split(Message.getSeparator());
+		String[] messageArray = messageString.split(":");
 		
 		if (messageArray.length < 6) {
 			// TODO some sort of error indicating that the message was not complete
@@ -84,13 +85,9 @@ public class Message implements Comparable<Message> {
 			toUsers.add(messageArray[i]);
 		}
 		
-		Message message = new Message(messageArray[1], messageArray[2], messageArray[3], messageArray[4], toUsers);
+		Message message = new Message(Escaping.unescape(messageArray[4]), messageArray[3], messageArray[2], messageArray[1], toUsers);
 		message.messageId_ = messageArray[0];
 		return message;
-	}
-	
-	private static String getSeparator() {
-		return "" + ((char) 31);
 	}
 
 }

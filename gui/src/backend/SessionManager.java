@@ -31,9 +31,8 @@ public class SessionManager {
 		SessionManager.currentUser_ = "kechpaja";
 		SessionManager.sessionId_ = "sessionID";
 		
-		NetworkUtilities networkUtilities = new NetworkUtilities();
-		SessionManager.sender_ = new Sender(networkUtilities);
-		SessionManager.receiver_ = new Receiver(conversations, networkUtilities);
+		SessionManager.sender_ = new Sender("localhost", 1234); // TODO get this info from somewhere
+		SessionManager.receiver_ = new Receiver(conversations, "localhost", 1234);
 		
 		Strings.setLocalizationLanguage("epo");
 	}

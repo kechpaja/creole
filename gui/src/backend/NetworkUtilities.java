@@ -1,25 +1,54 @@
 package backend;
 
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 
 public class NetworkUtilities {
 	
-	// TODO add server information and stuff
+	private Socket socket_; 
+	private BufferedReader socketReader_;
+	private BufferedWriter socketWriter_;
 	
-	protected String sendToServer(String message) {
-		// TODO actually send message to server, and return response
+	protected void init(String serverHost, int serverPort) {
+		try {
+			this.socket_ = new Socket(serverHost, serverPort);
+			this.socketReader_ = new BufferedReader(new InputStreamReader(this.socket_.getInputStream()));
+			this.socketWriter_ = new BufferedWriter(new OutputStreamWriter(this.socket_.getOutputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Could not connect to server.");
+		}
+	}
+	
+	protected String[] sendAndGetResponse(String[] request) {
+		try {
+			this.socketWriter_.write(String.join(" ", request));
+			this.socketWriter_.newLine();
+			this.socketWriter_.flush();
+			
+			return this.socketReader_.readLine().split(" ");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return null;
 	}
 	
-	protected List<Message> fetchUnseenMessages() {
-		// TODO this will eventually take an argument, but I don't know what just yet. Probably a time, 
-		// and the server will send back all messages that were not marked as seen before that time. 
-		// It's also not clear where the last time at which messages were checked will be stored. 
-		return null; 
+	protected void shutdown() {
+		try {
+			this.socketWriter_.close();
+			this.socketReader_.close();
+			this.socket_.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
-	public static String getSeparator() {
-		return "" + ((char) 30);
-	}
+	
 }
