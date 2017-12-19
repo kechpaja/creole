@@ -2,8 +2,8 @@ package ui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -27,7 +27,7 @@ public class ChatList extends JPanel {
 	protected ChatList(Conversation conversation) {
 		this.parent_ = conversation;
 		this.chats_ = new InsertionSortList<Chat>();
-		this.chatMap_ = new HashMap<String, Chat>();
+		this.chatMap_ = new ConcurrentHashMap<String, Chat>();
 		
 		// Set up New Chat button
 		this.add(new NewChatButton(this));

@@ -1,9 +1,9 @@
 package ui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JTabbedPane;
 
@@ -21,7 +21,7 @@ public class ConversationsPanel extends JTabbedPane {
 	
 	protected ConversationsPanel() {
 		this.conversations_ = new ArrayList<Conversation>();
-		this.conversationMap_ = new HashMap<String, Conversation>();
+		this.conversationMap_ = new ConcurrentHashMap<String, Conversation>();
 	}
 	
 	
