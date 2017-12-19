@@ -1,18 +1,8 @@
 package utils;
 
-import java.util.Comparator;
 import java.util.Vector;
 
 public class InsertionSortList<E extends Comparable<E>> extends Vector<E> {
-	
-	private class InsertionSortListComparator implements Comparator<E> {
-
-		@Override
-		public int compare(E o1, E o2) {
-			return o1.compareTo(o2);
-		}
-		
-	}
 
 	/**
 	 * 
@@ -21,18 +11,15 @@ public class InsertionSortList<E extends Comparable<E>> extends Vector<E> {
 	
 	public void insert(E element) {
 		synchronized (this) {
-			for (int i = 0; i < this.size(); i++) {
-				if (element.compareTo(this.get(i)) <= 0) {
+			for (int i = this.size(); i > 0; i--) {
+				if (element.compareTo(this.get(i - 1)) >= 0) {
 					this.add(i, element);
+					return;
 				}
 			}
 			
-			this.add(this.size(), element);
+			this.add(0, element);
 		}
-	}
-	
-	public void sort() {
-		this.sort(new InsertionSortListComparator());
 	}
 
 }

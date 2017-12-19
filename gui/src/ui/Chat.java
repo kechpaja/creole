@@ -128,7 +128,7 @@ public class Chat extends JPanel implements MouseListener {
 	}
 	
 	protected void deliver(Message message) {
-		this.messages_.add(message);
+		this.messages_.insert(message);
 		this.usersInChat_.addAll(message.getToUsers());
 		this.id_ = message.getChatId();
 		this.redisplay();
