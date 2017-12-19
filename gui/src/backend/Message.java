@@ -5,7 +5,7 @@ public class Message implements Comparable<Message> {
 	private String content_;
 	private String sendingUser_;
 	private long sendTime_;
-	private String threadId_;
+	private String chatId_;
 	private String conversationId_;
 	private String messageId_;
 	
@@ -14,7 +14,7 @@ public class Message implements Comparable<Message> {
 		this.content_ = content.replaceAll("" + ((char) 30), "").replaceAll("" + ((char) 31), "");
 		this.sendingUser_ = sendingUser;
 		this.sendTime_ = System.currentTimeMillis();
-		this.threadId_ = threadId;
+		this.chatId_ = threadId;
 		this.conversationId_ = conversationId;
 		this.messageId_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + SessionManager.getSessionId(); 
 	}
@@ -32,8 +32,8 @@ public class Message implements Comparable<Message> {
 		return this.sendingUser_;
 	}
 	
-	public String getThreadId() {
-		return this.threadId_;
+	public String getChatId() {
+		return this.chatId_;
 	}
 	
 	public String getConversationId() {
@@ -43,7 +43,7 @@ public class Message implements Comparable<Message> {
 	public String toSendableString() {
 		char unitSeparator = (char) 31;
 		
-		return this.messageId_ + unitSeparator + this.conversationId_ + unitSeparator + this.threadId_ 
+		return this.messageId_ + unitSeparator + this.conversationId_ + unitSeparator + this.chatId_ 
 				+ unitSeparator + this.sendingUser_ + unitSeparator + this.content_;
 	}
 

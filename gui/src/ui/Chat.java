@@ -185,15 +185,8 @@ public class Chat extends JPanel implements MouseListener, Comparable<Chat> {
 		this.typingArea_.requestFocusInWindow();
 	}
 
-	@Override
-	public void mouseEntered(MouseEvent arg0) { /* Do nothing */ }
-
-	@Override
-	public void mouseExited(MouseEvent arg0) { /* Do nothing */ }
-
-	@Override
-	public void mousePressed(MouseEvent arg0) { /* Do nothing */ }
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) { /* Do nothing */ }
+	@Override public void mouseEntered(MouseEvent arg0) { /* Do nothing */ }
+	@Override public void mouseExited(MouseEvent arg0) { /* Do nothing */ }
+	@Override public void mousePressed(MouseEvent arg0) { /* Do nothing */ }
+	@Override public void mouseReleased(MouseEvent arg0) { /* Do nothing */ }
 }
