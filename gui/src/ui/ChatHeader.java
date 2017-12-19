@@ -1,5 +1,7 @@
 package ui;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 
 public class ChatHeader extends JPanel {
@@ -15,8 +17,12 @@ public class ChatHeader extends JPanel {
 		this.title_ = new ChatTitle(chat);
 		this.forkButton_ = new ForkButton(chat);
 		
-		this.add(this.title_);
-		this.add(this.forkButton_);
+		this.setLayout(new BorderLayout());
+		
+		this.add(this.forkButton_, BorderLayout.LINE_START);
+		this.add(this.title_, BorderLayout.CENTER);
+		
+		this.validate();
 	}
 	
 	public String getTitle() {
