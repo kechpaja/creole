@@ -18,9 +18,9 @@ public class UserList extends JPanel {
 		this.users_ = new HashSet<String>();
 		
 		// TODO this is just for testing
-		this.users_.add("alpha");
-		this.users_.add("beta");
-		this.users_.add("gamma");
+		this.users_.add("testuser");
+	//	this.users_.add("beta");
+	//	this.users_.add("gamma");
 		
 		this.setVisible(true);
 		this.setOpaque(true);

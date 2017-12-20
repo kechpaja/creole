@@ -26,7 +26,7 @@ public class Receiver implements Runnable {
 		this.networkUtilities_.init(this.serverHost_, this.serverPort_);
 		
 		while (!this.shutdownFlag_) {
-			String[] response = networkUtilities_.sendAndGetResponse(new String[] { "receive" });
+			String[] response = networkUtilities_.sendAndGetResponse(new String[] { "receive", SessionManager.getCurrentUser() });
 			
 			if (response.length >= 1 && response[0].equals("messages")) {
 				List<Message> messages = new ArrayList<Message>();

@@ -41,6 +41,16 @@ public class ChatList extends JPanel {
 		this.setOpaque(true);
 	}
 	
+	// TODO there shouldn't be two such similar methods, but we can consolidate them later. 
+	protected Chat createNewChat(String id) {
+		Chat chat = new Chat(this);
+		chat.setId(id);
+		this.chats_.add(chat);
+		this.chatMap_.put(chat.getId(), chat);
+		this.parent_.redisplay();
+		return chat;
+	}
+	
 	protected Chat createNewChat() {
 		Chat chat = new Chat(this);
 		this.chats_.add(chat);
@@ -81,8 +91,9 @@ public class ChatList extends JPanel {
 	}
 	
 	protected void deliver(Message message) {
-		if (!this.chatMap_.containsKey(message.getId())) {
-			this.createNewChat().deliver(message); // Unrecognized message indicates that a new chat has been started
+		if (!this.chatMap_.containsKey(message.getChatId())) {
+			// TODO should we really count on this method to add new chat to relevant maps?
+			this.createNewChat(message.getChatId()).deliver(message); // Unrecognized message indicates that a new chat has been started
 			
 			// TODO eventually, we'll have to check against a list of chats that have been deleted, and ignore if
 			// it is one of those, but that's for the future. Or perhaps every message that can start a new chat 

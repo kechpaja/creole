@@ -25,7 +25,7 @@ public class Window extends JFrame implements ActionListener, WindowListener {
 	/*
 	 * Initialize the window. 
 	 */
-	private void init() {
+	private void init(String username) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.addWindowListener(this);
 		
@@ -45,7 +45,7 @@ public class Window extends JFrame implements ActionListener, WindowListener {
 		this.conversations_ = new ConversationsPanel();
 		
 
-		SessionManager.init(this.conversations_);
+		SessionManager.init(this.conversations_, username);
 		
 		
 		panel.add(this.conversations_);
@@ -60,7 +60,7 @@ public class Window extends JFrame implements ActionListener, WindowListener {
 
 	public static void main(String[] args) {
 		Window window = new Window();
-		window.init();
+		window.init(args[0]);
 	}
 	
 	

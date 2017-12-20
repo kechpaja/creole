@@ -45,6 +45,11 @@ public class Conversation extends JPanel {
 		this.setOpaque(true);
 		this.validate();
 	}
+	
+	protected Conversation(String id) {
+		this();
+		this.id_ = id; // TODO not elegant, but work on it later
+	}
 
 	
 	protected String getTitle() {

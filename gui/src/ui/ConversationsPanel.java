@@ -28,13 +28,22 @@ public class ConversationsPanel extends JTabbedPane {
 	public void deliver(List<Message> messages) {
 		for (Message message : messages) {
 			if (!this.conversationMap_.containsKey(message.getConversationId())) {
-				this.createNewConversation().deliver(message);
+				this.createNewConversation().deliver(message); // TODO this needs to take conversation ID as well
 			}
 			
 			this.conversationMap_.get(message.getConversationId()).deliver(message);
 		}
 	}
 	
+	
+	// TODO we shouldn't have two methods with this much in common, but deal with fixing it later
+	protected Conversation createNewConvesation(String id) {
+		Conversation conversation = new Conversation(id);
+		this.conversations_.add(conversation);
+		this.conversationMap_.put(conversation.getId(), conversation);
+		this.addConversation(conversation);
+		return conversation;
+	}
 	
 	protected Conversation createNewConversation() {
 		Conversation conversation = new Conversation();

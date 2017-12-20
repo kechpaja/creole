@@ -24,11 +24,11 @@ public class SessionManager {
 		return SessionManager.sender_;
 	}
 	
-	public static void init(ConversationsPanel conversations) {
+	public static void init(ConversationsPanel conversations, String username) {
 		// TODO set everything up. Take args if necessary. 
 		// Everything currenly here is just for testing. 
 		
-		SessionManager.currentUser_ = "kechpaja";
+		SessionManager.currentUser_ = username;
 		SessionManager.sessionId_ = "sessionID";
 		
 		SessionManager.sender_ = new Sender("localhost", 1234); // TODO get this info from somewhere

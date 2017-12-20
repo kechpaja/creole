@@ -89,6 +89,10 @@ public class Chat extends JPanel implements MouseListener {
 		return this.id_;
 	}
 	
+	protected void setId(String id) {
+		this.id_ = id;
+	}
+	
 	protected String getConversationId() {
 		return this.chatList_.getConversationId();
 	}
@@ -133,6 +137,12 @@ public class Chat extends JPanel implements MouseListener {
 		int index = this.messages_.insert(message);
 		this.messageDisplayStrings_.add(index, message.toString());
 		this.usersInChat_.addAll(message.getToUsers());
+		this.usersInChat_.add(message.getSendingUser());
+		
+		// Add users in new message to conversation-level list of users
+		this.getConversation().getUsers().addAll(message.getToUsers());
+		this.getConversation().getUsers().add(message.getSendingUser());
+		
 		this.id_ = message.getChatId();
 		this.redisplay();
 		this.chatList_.bumpToFront(this);
