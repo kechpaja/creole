@@ -16,7 +16,10 @@ public class Router {
 			this.data_.put(user, new Vector<String>());
 		}
 		
-		this.data_.get(user).add(message);
+		Vector<String> messageList = this.data_.get(user);
+		synchronized (messageList) {
+			messageList.add(message);
+		}
 	}
 	
 	public Vector<String> getMessagesForUser(String user) {
@@ -24,9 +27,11 @@ public class Router {
 		
 		if (this.data_.containsKey(user)) {
 			Vector<String> messageList = this.data_.get(user);
-			String message;
-			while ((message = messageList.remove(0)) != null) {
-				messages.add(message);
+			
+			synchronized (messageList) {
+				while (messageList.size() > 0) {
+					messages.add(messageList.remove(0));
+				}
 			}
 		}
 		

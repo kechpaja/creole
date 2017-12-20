@@ -60,6 +60,17 @@ public class Connection implements Runnable {
 				// TODO failure case --- do we just fail?
 			}
 		}
+		
+		try {
+			this.socketReader_.close();
+			this.socketWriter_.flush();
+			this.socketWriter_.close();
+			this.socket_.shutdownOutput();
+			this.socket_.close();
+		} catch (IOException e) {
+			System.out.println("Meh; we were shutting down anyway.");
+			e.printStackTrace();
+		}
 	}
 	
 	public static void init() {
