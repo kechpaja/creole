@@ -32,7 +32,16 @@ public class Sender implements Runnable {
 			try {
 				Message message = this.sendQueue_.take();
 				
-				String[] response = networkUtilities_.sendAndGetResponse(new String[] { "send", message.toSendableString() });
+				String[] request = new String[message.getToUsers().size() + 2];
+				request[0] = "send";
+				request[1] = message.toSendableString();
+				int i = 2;
+				for (String toUser : message.getToUsers()) {
+					request[i] = toUser;
+					i++;
+				}
+				
+				String[] response = networkUtilities_.sendAndGetResponse(request);
 				
 				if (response.length < 2  || !response[0].equals("sent") || !response[1].equals(message.getId())) {
 					// TODO various failure cases; possibly try again

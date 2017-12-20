@@ -23,6 +23,8 @@ public class NetworkUtilities {
 			e.printStackTrace();
 			System.out.println("Could not connect to server.");
 		}
+		
+		// TODO send the username to server
 	}
 	
 	protected String[] sendAndGetResponse(String[] request) {
