@@ -31,17 +31,34 @@ public class Connection implements Runnable {
 	}
 	
 	public void run() {
-		// TODO write this run method
-		
-		// TODO figure out who's connecting. Store username. 
-		
-		// TODO start regular loop 
-		
 		// TODO perhaps we can have these connections specialize? Probably not right now. 
+		// Or have one socket for each connection, and just respond with that user's messages
+		// whenever there are any. 
 		
 		while (!Connection.shutdownFlag_) {
-			
-			// TODO there will be a shutdown command that the client can send. 
+			try {
+				String[] request = this.socketReader_.readLine().split(" ");
+				
+				if (request.length >= 2 && request[0].equals("send")) {
+					String message = request[1];
+					for (int i = 2; i < request.length; i++) {
+						Connection.router_.routeMessageToUser(message, request[i]);
+					}
+					this.socketWriter_.write("sent");
+					this.socketWriter_.newLine();
+					this.socketWriter_.flush();
+				} else if (request.length >= 2 && request[0].equals("receive")) {
+					this.socketWriter_.write("messages " + String.join(" ", Connection.router_.getMessagesForUser(request[1])));
+					this.socketWriter_.newLine();
+					this.socketWriter_.flush();
+				} else if (request.length >= 1 && request[0].equals("shutdown")) {
+					break;
+				} else {
+					// TODO various error cases
+				}
+			} catch (IOException e) {
+				// TODO failure case --- do we just fail?
+			}
 		}
 	}
 	
