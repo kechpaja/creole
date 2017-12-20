@@ -43,7 +43,7 @@ public class Sender implements Runnable {
 				
 				String[] response = networkUtilities_.sendAndGetResponse(request);
 				
-				if (response.length < 2  || !response[0].equals("sent") || !response[1].equals(message.getId())) {
+				if (response.length < 2  || !response[0].equals("sent")) {
 					// TODO various failure cases; possibly try again
 				}
 			} catch (InterruptedException e) {
