@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -11,7 +13,7 @@ import javax.swing.JPanel;
 import backend.SessionManager;
 import resources.Strings;
 
-public class Window extends JFrame implements ActionListener {
+public class Window extends JFrame implements ActionListener, WindowListener {
 	
 	/**
 	 * 
@@ -25,12 +27,15 @@ public class Window extends JFrame implements ActionListener {
 	 */
 	private void init() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.addWindowListener(this);
 		
+		// TODO create separate class for this button, perhaps
 		JButton newConversationButton = new JButton(Strings.getNewConversationButtonText());
 		newConversationButton.addActionListener(this);
 		newConversationButton.setActionCommand("new conversation");
 		
 		// try with a JPanel
+		// TODO create separate class for this panel
 		JPanel panel = new JPanel();
 		panel.add(newConversationButton);
 		
@@ -42,8 +47,6 @@ public class Window extends JFrame implements ActionListener {
 
 		SessionManager.init(this.conversations_);
 		
-		// TODO call shutdown on SessionManager when necessary
-		
 		
 		panel.add(this.conversations_);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -54,6 +57,16 @@ public class Window extends JFrame implements ActionListener {
 		this.setVisible(true);
 	}
 	
+
+	public static void main(String[] args) {
+		Window window = new Window();
+		window.init();
+	}
+	
+	
+	/*
+	 * Action Listener methods
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("new conversation")) {
 			this.conversations_.createNewConversation();
@@ -61,10 +74,20 @@ public class Window extends JFrame implements ActionListener {
 	}
 	
 	
+	/*
+	 * Window Listener methods
+	 */
 
-	public static void main(String[] args) {
-		Window window = new Window();
-		window.init();
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		SessionManager.shutdown();
 	}
+
+	@Override public void windowActivated(WindowEvent arg0) { /* Do nothing */ }
+	@Override public void windowClosed(WindowEvent arg0) { /* Do nothing */ }
+	@Override public void windowDeactivated(WindowEvent arg0) { /* Do nothing */ }
+	@Override public void windowDeiconified(WindowEvent arg0) { /* Do nothing */ }
+	@Override public void windowIconified(WindowEvent arg0) { /* Do nothing */ }
+	@Override public void windowOpened(WindowEvent arg0) { /* Do nothing */ }
 
 }

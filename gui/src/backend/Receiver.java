@@ -1,5 +1,8 @@
 package backend;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ui.ConversationsPanel;
 
 public class Receiver implements Runnable {
@@ -23,8 +26,18 @@ public class Receiver implements Runnable {
 		this.networkUtilities_.init(this.serverHost_, this.serverPort_);
 		
 		while (!this.shutdownFlag_) {
-			//this.conversations_.deliver(this.networkUtilities_.fetchUnseenMessages());
-			// TODO actually write this stuff
+			
+			String[] response = networkUtilities_.sendAndGetResponse(new String[] { "receive" });
+			
+			if (response.length >= 1 && response[0].equals("messages")) {
+				List<Message> messages = new ArrayList<Message>();
+				for (int i = 1; i < response.length; i++) {
+					messages.add(Message.fromSendableString(response[i]));
+				}
+				this.conversations_.deliver(messages);
+			} else {
+				// TODO various error cases
+			}
 		}
 		
 		this.networkUtilities_.shutdown();
