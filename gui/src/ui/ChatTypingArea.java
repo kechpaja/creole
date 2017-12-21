@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JTextArea;
 
@@ -39,13 +41,21 @@ public class ChatTypingArea extends JTextArea implements KeyListener {
 			if (e.isShiftDown()) {
 				this.append("\n");
 			} else {
+				Set<String> toUsers = new HashSet<String>();
+				
+				for (String user : this.chat_.getUsersInChat()) {
+					if (!user.equals(SessionManager.getCurrentUser())) {
+						toUsers.add(user); // TODO there's got to be something more elegant than this. 
+					}
+				}
+				
 				if (!this.getText().equals("")) {
 					Message message = new Message(
 											this.getText(), 
 											SessionManager.getCurrentUser(), 
 											this.chat_.getId(), 
 											this.chat_.getConversationId(), 
-											this.chat_.getUsersInChat());
+											toUsers);
 					this.setText("");
 					this.chat_.deliver(message);
 					SessionManager.getSender().queueMessage(message);

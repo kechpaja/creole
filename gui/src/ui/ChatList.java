@@ -98,9 +98,9 @@ public class ChatList extends JPanel {
 			// TODO eventually, we'll have to check against a list of chats that have been deleted, and ignore if
 			// it is one of those, but that's for the future. Or perhaps every message that can start a new chat 
 			// should be marked as such. 
+		} else {
+			this.chatMap_.get(message.getChatId()).deliver(message);
 		}
-		
-		this.chatMap_.get(message.getChatId()).deliver(message);
 	}
 	
 	protected void redisplayConversation() {
