@@ -45,12 +45,16 @@ public class ChatListEntry extends JTextField implements MouseListener {
 	
 	protected void setHighlighted(boolean highlighted) {
 		if (highlighted) {
-			this.setBackground(Color.CYAN);
+			this.setBackground(Color.GREEN);
 		} else {
 			this.setBackground(Color.WHITE);
 		}
 		
 		this.validate();
+	}
+	
+	protected void setNewMessageColor() {
+		this.setBackground(Color.CYAN);
 	}
 
 }

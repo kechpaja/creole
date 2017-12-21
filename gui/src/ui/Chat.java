@@ -125,7 +125,7 @@ public class Chat extends JPanel implements MouseListener {
 		
 		this.listEntry_.setHighlighted(this.isPrioritized_);
 		if (this.isPrioritized_) {
-			this.setBorder(BorderFactory.createLineBorder(Color.CYAN, 5));
+			this.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 		} else {
 			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 		}
@@ -146,6 +146,12 @@ public class Chat extends JPanel implements MouseListener {
 		
 		this.id_ = message.getChatId();
 		this.redisplay();
+		
+		if (!message.getSendingUser().equals(SessionManager.getCurrentUser())) {
+			this.listEntry_.setNewMessageColor();
+			this.setBorder(BorderFactory.createLineBorder(Color.CYAN, 5));
+		}
+		
 		this.chatList_.bumpToFront(this);
 	}
 	
