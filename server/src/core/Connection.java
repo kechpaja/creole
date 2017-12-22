@@ -51,6 +51,10 @@ public class Connection implements Runnable {
 					this.socketWriter_.write("messages " + String.join(" ", Connection.router_.getMessagesForUser(request[1])));
 					this.socketWriter_.newLine();
 					this.socketWriter_.flush();
+				} else if (request.length >= 1 && request[0].equals("userlist")) {
+					this.socketWriter_.write("users " + String.join(" ", Connection.router_.getUserList()));
+					this.socketWriter_.newLine();
+					this.socketWriter_.flush();
 				} else if (request.length >= 1 && request[0].equals("shutdown")) {
 					break;
 				} else {

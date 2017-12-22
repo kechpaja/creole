@@ -9,6 +9,7 @@ public class Router {
 	
 	public Router() {
 		this.data_ = new ConcurrentHashMap<String, Vector<String>>();
+		this.data_.put("admin", new Vector<String>());
 	}
 	
 	private void addUser(String user) {
@@ -55,6 +56,16 @@ public class Router {
 		}
 		
 		return messages;
+	}
+	
+	public Vector<String> getUserList() {
+		Vector<String> userList = new Vector<String>();
+		
+		for (String user : this.data_.keySet()) {
+			userList.add(user);
+		}
+		
+		return userList;
 	}
 
 }

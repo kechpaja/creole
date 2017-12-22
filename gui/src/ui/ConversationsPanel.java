@@ -35,6 +35,13 @@ public class ConversationsPanel extends JTabbedPane {
 		}
 	}
 	
+	public void addUsers(List<String> users) {
+		for (Conversation conversation : this.conversations_) {
+			conversation.getUsers().addAll(users);
+			conversation.redisplay();
+		}
+	}
+	
 	
 	// TODO we shouldn't have two methods with this much in common, but deal with fixing it later
 	protected Conversation createNewConversation(String id) {
