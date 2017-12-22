@@ -66,6 +66,7 @@ public class ChatPanel extends JPanel {
 	}
 	
 	public void deliver(Message message) {
+		this.userList_.deliver(message);
 		this.chatList_.deliver(message);
 	}
 }

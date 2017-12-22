@@ -25,6 +25,7 @@ public class ChatListEntry extends JTextField implements MouseListener {
 	
 	public void redisplay() {
 		this.setText(String.join(", ", this.chat_.getUsersInChatSorted()));
+		this.setHighlighted(this.chat_.isPrioritized());
 	}
 
 	

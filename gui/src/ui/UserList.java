@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 
+import backend.Message;
+
 public class UserList extends JPanel {
 
 	/**
@@ -30,6 +32,11 @@ public class UserList extends JPanel {
 	
 	public void addUsers(Set<String> users) {
 		this.users_.addAll(users);
+	}
+	
+	public void deliver(Message message) {
+		this.users_.addAll(message.getToUsers());
+		this.users_.add(message.getSendingUser());
 	}
 
 }

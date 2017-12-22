@@ -32,12 +32,11 @@ public class Chat extends JPanel implements MouseListener {
 	private ChatList chatList_;
 	private String id_;
 	private Set<String> usersInChat_;
-	private boolean isPrioritized_;
 	private InsertionSortList<Message> messages_;
 	private Vector<String> messageDisplayStrings_;
 	
-	protected Chat(ChatList chatList) {
-		this.id_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + SessionManager.getSessionId();
+	protected Chat(ChatList chatList, String id) {
+		this.id_ = id;
 		this.messages_ = new InsertionSortList<Message>();
 		this.messageDisplayStrings_ = new Vector<String>();
 		this.chatList_ = chatList;
@@ -87,12 +86,8 @@ public class Chat extends JPanel implements MouseListener {
 		return this.id_;
 	}
 	
-	protected void setId(String id) {
-		this.id_ = id;
-	}
-	
 	protected ChatPanel getConversation() {
-		return this.chatList_.getConversation();
+		return this.chatList_.getChatPanel();
 	}
 	
 	protected Set<String> getUsersInChat() {
@@ -116,14 +111,7 @@ public class Chat extends JPanel implements MouseListener {
 	
 	protected void redisplay() {
 		this.historyArea_.setMessageDisplayStrings(this.messageDisplayStrings_);
-		
-		this.listEntry_.setHighlighted(this.isPrioritized_);
-		if (this.isPrioritized_) {
-			this.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
-		} else {
-			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-		}
-		
+		this.setBorder(BorderFactory.createLineBorder(this.isPrioritized() ? Color.GREEN : Color.BLACK, 5));
 		this.header_.redisplay();
 		this.listEntry_.redisplay();
 	}
@@ -133,12 +121,6 @@ public class Chat extends JPanel implements MouseListener {
 		this.messageDisplayStrings_.add(index, message.toString());
 		this.usersInChat_.addAll(message.getToUsers());
 		this.usersInChat_.add(message.getSendingUser());
-		
-		// Add users in new message to conversation-level list of users
-		this.getConversation().getUsers().addAll(message.getToUsers());
-		this.getConversation().getUsers().add(message.getSendingUser());
-		
-		this.id_ = message.getChatId();
 		this.redisplay();
 		
 		if (!message.getSendingUser().equals(SessionManager.getCurrentUser())) {
@@ -149,17 +131,8 @@ public class Chat extends JPanel implements MouseListener {
 		this.chatList_.bumpToFront(this);
 	}
 	
-	protected void setPrioritized() {
-		for (Chat chat : this.chatList_.getChats()) {
-			chat.isPrioritized_ = false;
-		}
-		
-		this.isPrioritized_ = true;
-		this.chatList_.setPrioritizedChat(this);
-		
-		for (Chat chat : this.chatList_.getChats()) {
-			chat.redisplay();
-		}
+	protected boolean isPrioritized() {
+		return this.chatList_.getPrioritizedChat() == this;
 	}
 	
 	private void wrapInScrollPaneAndAdd(JTextArea area, String where, boolean hasUpperBorder) {
@@ -174,8 +147,8 @@ public class Chat extends JPanel implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		this.setPrioritized();
-		this.chatList_.redisplayConversation();
+		this.chatList_.setPrioritizedChat(this);
+		this.chatList_.redisplayAll();
 		this.typingArea_.requestFocusInWindow();
 	}
 

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import backend.Message;
+import backend.SessionManager;
 
 public class ChatList extends JPanel {
 
@@ -41,10 +42,8 @@ public class ChatList extends JPanel {
 		this.setOpaque(true);
 	}
 	
-	// TODO there shouldn't be two such similar methods, but we can consolidate them later. 
 	protected Chat createNewChat(String id) {
-		Chat chat = new Chat(this);
-		chat.setId(id);
+		Chat chat = new Chat(this, id);
 		this.chats_.add(chat);
 		this.chatMap_.put(chat.getId(), chat);
 		this.parent_.redisplay();
@@ -52,11 +51,7 @@ public class ChatList extends JPanel {
 	}
 	
 	protected Chat createNewChat() {
-		Chat chat = new Chat(this);
-		this.chats_.add(chat);
-		this.chatMap_.put(chat.getId(), chat);
-		this.parent_.redisplay();
-		return chat;
+		return createNewChat(SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + SessionManager.getSessionId());
 	}
 	
 	protected Vector<Chat> getChats() {
@@ -76,13 +71,13 @@ public class ChatList extends JPanel {
 			
 			this.chatListPanel_.add(chat.getListEntry(), c);
 			
-			chat.redisplay();
+			chat.getListEntry().redisplay();
 		}
 		
 		this.validate();
 	}
 	
-	protected ChatPanel getConversation() {
+	protected ChatPanel getChatPanel() {
 		return this.parent_;
 	}
 	
@@ -99,7 +94,7 @@ public class ChatList extends JPanel {
 		}
 	}
 	
-	protected void redisplayConversation() {
+	protected void redisplayAll() {
 		this.parent_.redisplay();
 	}
 	
