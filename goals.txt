@@ -1,2 +1,5 @@
  - Eventually, allow a user to connect from more than one client at once. This
    probably won't be that hard to do, but it currently doesn't work. 
+
+ - Get rid of concept of a conversation. Just chats, and perhaps a tagging
+   system to link related chats together. 
