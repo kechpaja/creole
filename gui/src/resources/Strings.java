@@ -22,16 +22,8 @@ public abstract class Strings {
 		return Strings.strings_.getLocalizedAddUserLabel();
 	}
 	
-	public static String getDefaultChatTitle(int count) {
-		return Strings.strings_.getLocalizedDefaultChatTitle(count);
-	}
-	
 	public static String getForkButtonText() {
 		return Strings.strings_.getLocalizedForkButtonText();
-	}
-	
-	public static String getForkedChatTitle(String originalChatTitle) {
-		return Strings.strings_.getLocalizedForkedChatTitle(originalChatTitle);
 	}
 	
 	public static String getNewChatButtonText() {
@@ -40,9 +32,7 @@ public abstract class Strings {
 	
 	
 	protected abstract String getLocalizedAddUserLabel();
-	protected abstract String getLocalizedDefaultChatTitle(int count);
 	protected abstract String getLocalizedForkButtonText();
-	protected abstract String getLocalizedForkedChatTitle(String originalChatTitle);
 	protected abstract String getLocalizedNewChatButtonText();
 
 }

@@ -26,8 +26,8 @@ public class ChatList extends JPanel {
 	private JPanel chatListPanel_;
 	private Chat prioritizedChat_;
 	
-	protected ChatList(ChatPanel conversation) {
-		this.parent_ = conversation;
+	protected ChatList(ChatPanel chatPanel) {
+		this.parent_ = chatPanel;
 		this.chats_ = new Vector<Chat>();
 		this.chatMap_ = new ConcurrentHashMap<String, Chat>();
 		
@@ -83,7 +83,6 @@ public class ChatList extends JPanel {
 	
 	public void deliver(Message message) {
 		if (!this.chatMap_.containsKey(message.getChatId())) {
-			// TODO should we really count on this method to add new chat to relevant maps?
 			this.createNewChat(message.getChatId()).deliver(message); // Unrecognized message indicates that a new chat has been started
 			
 			// TODO eventually, we'll have to check against a list of chats that have been deleted, and ignore if
