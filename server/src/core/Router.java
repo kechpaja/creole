@@ -13,7 +13,7 @@ public class Router {
 	}
 	
 	private void addUser(String user) {
-		String userJoinedMessage = "admin:admin:admin:admin:";
+		String userJoinedMessage = "admin:admin:admin:";
 		userJoinedMessage += "User\\s\"" + user + "\"\\sjoined\\sthe\\sserver!:"; // TODO localize this string! Possibly on client. 
 		userJoinedMessage += String.join(":", this.data_.keySet());
 			
