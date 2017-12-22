@@ -25,5 +25,9 @@ public class UserList extends JPanel {
 	public Set<String> getUsers() {
 		return this.users_;
 	}
+	
+	public void addUsers(Set<String> users) {
+		this.users_.addAll(users);
+	}
 
 }

@@ -1,21 +1,21 @@
 package backend;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import ui.ConversationsPanel;
+import ui.Conversation;
 
 public class Receiver implements Runnable {
 	
-	private ConversationsPanel conversations_;
+	private Conversation chatPanel_;
 	private NetworkUtilities networkUtilities_;
 	private String serverHost_;
 	private int serverPort_;
 	
 	private boolean shutdownFlag_;
 	
-	public Receiver(ConversationsPanel conversations, String serverHost, int serverPort) {
-		this.conversations_ = conversations;
+	public Receiver(Conversation chatPanel, String serverHost, int serverPort) {
+		this.chatPanel_ = chatPanel;
 		this.networkUtilities_ = new NetworkUtilities();
 		this.serverHost_ = serverHost;
 		this.serverPort_ = serverPort;
@@ -28,11 +28,11 @@ public class Receiver implements Runnable {
 		String[] response = networkUtilities_.sendAndGetResponse(new String[] { "userlist" });
 		
 		if (response.length >= 1 && response[0].equals("users")) {
-			List<String> users = new ArrayList<String>();
+			Set<String> users = new HashSet<String>();
 			for (int i = 1; i < response.length; i++) {
 				users.add(response[i]);
 			}
-			this.conversations_.addUsers(users);
+			this.chatPanel_.addUsers(users);
 		} else {
 			// TODO various error cases
 		}
@@ -41,11 +41,9 @@ public class Receiver implements Runnable {
 			response = networkUtilities_.sendAndGetResponse(new String[] { "receive", SessionManager.getCurrentUser() });
 			
 			if (response.length >= 1 && response[0].equals("messages")) {
-				List<Message> messages = new ArrayList<Message>();
 				for (int i = 1; i < response.length; i++) {
-					messages.add(Message.fromSendableString(response[i]));
+					this.chatPanel_.deliver(Message.fromSendableString(response[i]));
 				}
-				this.conversations_.deliver(messages);
 			} else {
 				// TODO various error cases
 			}

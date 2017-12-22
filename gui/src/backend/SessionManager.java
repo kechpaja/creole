@@ -1,7 +1,7 @@
 package backend;
 
 import resources.Strings;
-import ui.ConversationsPanel;
+import ui.Conversation;
 
 public class SessionManager {
 	
@@ -24,7 +24,7 @@ public class SessionManager {
 		return SessionManager.sender_;
 	}
 	
-	public static void init(ConversationsPanel conversations, String username) {
+	public static void init(Conversation chatPanel, String username) {
 		// TODO set everything up. Take args if necessary. 
 		// Everything currenly here is just for testing. 
 		
@@ -32,12 +32,10 @@ public class SessionManager {
 		SessionManager.sessionId_ = "sessionID";
 		
 		SessionManager.sender_ = new Sender("localhost", 1234); // TODO get this info from somewhere
-		SessionManager.receiver_ = new Receiver(conversations, "localhost", 1234);
+		SessionManager.receiver_ = new Receiver(chatPanel, "localhost", 1234);
 		
 		SessionManager.launchThread(SessionManager.sender_);
 		SessionManager.launchThread(SessionManager.receiver_);
-		
-		Strings.setLocalizationLanguage("epo");
 	}
 	
 	public static void shutdown() {

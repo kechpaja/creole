@@ -6,11 +6,6 @@ class StringsEpo extends Strings {
 	protected String getLocalizedAddUserLabel() {
 		return "Aldonu Uzanton";
 	}
-	
-	@Override
-	protected String getLocalizedDefaultConversationTitle(int count) {
-		return "Konversacio " + count;
-	}
 
 	@Override
 	protected String getLocalizedDefaultChatTitle(int count) {
@@ -25,11 +20,6 @@ class StringsEpo extends Strings {
 	@Override
 	protected String getLocalizedForkedChatTitle(String originalChatTitle) {
 		return "Nova Fadeno (forkita de: " + originalChatTitle + ")";
-	}
-
-	@Override
-	protected String getLocalizedNewConversationButtonText() {
-		return "Novan konversacion";
 	}
 
 	@Override

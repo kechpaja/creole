@@ -11,16 +11,14 @@ public class Message implements Comparable<Message> {
 	private String sendingUser_;
 	private long sendTime_;
 	private String chatId_;
-	private String conversationId_;
 	private String messageId_;
 	private Set<String> toUsers_;
 	
-	public Message(String content, String sendingUser, String chatId, String conversationId, Set<String> toUsers) {
+	public Message(String content, String sendingUser, String chatId, Set<String> toUsers) {
 		this.content_ = content.replaceAll("[^\\P{Cc}\\t\\r\\n]", ""); // https://stackoverflow.com/a/15520992
 		this.sendingUser_ = sendingUser;
 		this.sendTime_ = System.currentTimeMillis();
 		this.chatId_ = chatId;
-		this.conversationId_ = conversationId;
 		this.messageId_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + SessionManager.getSessionId();
 		this.toUsers_ = toUsers;
 	}
@@ -42,17 +40,13 @@ public class Message implements Comparable<Message> {
 		return this.chatId_;
 	}
 	
-	public String getConversationId() {
-		return this.conversationId_;
-	}
-	
 	public Set<String> getToUsers() {
 		return this.toUsers_;
 	}
 	
 	public String toSendableString() {
-		return this.messageId_ + ":" + this.conversationId_ + ":" + this.chatId_ + ":" + this.sendingUser_  + ":" 
-				+ Escaping.escape(this.content_) + ":" + String.join(":", this.toUsers_);
+		return this.messageId_ + ":" + this.chatId_ + ":" + this.sendingUser_  + ":" + Escaping.escape(this.content_) + ":" 
+						+ String.join(":", this.toUsers_);
 	}
 	
 	public String toString() {
@@ -76,16 +70,16 @@ public class Message implements Comparable<Message> {
 	public static Message fromSendableString(String messageString) {
 		String[] messageArray = messageString.split(":");
 		
-		if (messageArray.length < 6) {
+		if (messageArray.length < 5) {
 			// TODO some sort of error indicating that the message was not complete
 		}
 		
 		Set<String> toUsers = new HashSet<String>();
-		for (int i = 5; i < messageArray.length; i++) {
+		for (int i = 4; i < messageArray.length; i++) {
 			toUsers.add(messageArray[i]);
 		}
 		
-		Message message = new Message(Escaping.unescape(messageArray[4]), messageArray[3], messageArray[2], messageArray[1], toUsers);
+		Message message = new Message(Escaping.unescape(messageArray[3]), messageArray[2], messageArray[1], toUsers);
 		message.messageId_ = messageArray[0];
 		return message;
 	}

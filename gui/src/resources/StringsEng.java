@@ -6,11 +6,6 @@ class StringsEng extends Strings {
 	protected String getLocalizedAddUserLabel() {
 		return "Add User";
 	}
-	
-	@Override
-	protected String getLocalizedDefaultConversationTitle(int count) {
-		return "Conversation " + count;
-	}
 
 	@Override
 	protected String getLocalizedDefaultChatTitle(int count) {
@@ -25,11 +20,6 @@ class StringsEng extends Strings {
 	@Override
 	protected String getLocalizedForkedChatTitle(String originalChatTitle) {
 		return "New Chat (forked from: " + originalChatTitle + ")";
-	}
-
-	@Override
-	protected String getLocalizedNewConversationButtonText() {
-		return "New Conversation";
 	}
 
 	@Override

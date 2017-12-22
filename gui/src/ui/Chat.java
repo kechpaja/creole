@@ -93,10 +93,6 @@ public class Chat extends JPanel implements MouseListener {
 		this.id_ = id;
 	}
 	
-	protected String getConversationId() {
-		return this.chatList_.getConversationId();
-	}
-	
 	protected Conversation getConversation() {
 		return this.chatList_.getConversation();
 	}

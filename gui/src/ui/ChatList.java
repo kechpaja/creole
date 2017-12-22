@@ -82,15 +82,11 @@ public class ChatList extends JPanel {
 		this.validate();
 	}
 	
-	protected String getConversationId() {
-		return this.parent_.getId();
-	}
-	
 	protected Conversation getConversation() {
 		return this.parent_;
 	}
 	
-	protected void deliver(Message message) {
+	public void deliver(Message message) {
 		if (!this.chatMap_.containsKey(message.getChatId())) {
 			// TODO should we really count on this method to add new chat to relevant maps?
 			this.createNewChat(message.getChatId()).deliver(message); // Unrecognized message indicates that a new chat has been started

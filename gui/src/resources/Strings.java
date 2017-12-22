@@ -22,10 +22,6 @@ public abstract class Strings {
 		return Strings.strings_.getLocalizedAddUserLabel();
 	}
 	
-	public static String getDefaultConversationTitle(int count) {
-		return Strings.strings_.getLocalizedDefaultConversationTitle(count);
-	}
-	
 	public static String getDefaultChatTitle(int count) {
 		return Strings.strings_.getLocalizedDefaultChatTitle(count);
 	}
@@ -37,10 +33,6 @@ public abstract class Strings {
 	public static String getForkedChatTitle(String originalChatTitle) {
 		return Strings.strings_.getLocalizedForkedChatTitle(originalChatTitle);
 	}
-
-	public static String getNewConversationButtonText() {
-		return Strings.strings_.getLocalizedNewConversationButtonText();
-	}
 	
 	public static String getNewChatButtonText() {
 		return Strings.strings_.getLocalizedNewChatButtonText();
@@ -48,11 +40,9 @@ public abstract class Strings {
 	
 	
 	protected abstract String getLocalizedAddUserLabel();
-	protected abstract String getLocalizedDefaultConversationTitle(int count);
 	protected abstract String getLocalizedDefaultChatTitle(int count);
 	protected abstract String getLocalizedForkButtonText();
 	protected abstract String getLocalizedForkedChatTitle(String originalChatTitle);
-	protected abstract String getLocalizedNewConversationButtonText();
 	protected abstract String getLocalizedNewChatButtonText();
 
 }

@@ -13,14 +13,14 @@ import javax.swing.JPanel;
 import backend.SessionManager;
 import resources.Strings;
 
-public class Window extends JFrame implements ActionListener, WindowListener {
+public class Window extends JFrame implements WindowListener {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -808477151995604656L;
 	
-	private ConversationsPanel conversations_ = null;
+	//private ConversationsPanel conversations_ = null;
 
 	/*
 	 * Initialize the window. 
@@ -30,25 +30,27 @@ public class Window extends JFrame implements ActionListener, WindowListener {
 		this.addWindowListener(this);
 		
 		// TODO create separate class for this button, perhaps
-		JButton newConversationButton = new JButton(Strings.getNewConversationButtonText());
-		newConversationButton.addActionListener(this);
-		newConversationButton.setActionCommand("new conversation");
+		//JButton newConversationButton = new JButton(Strings.getNewConversationButtonText());
+		//newConversationButton.addActionListener(this);
+		//newConversationButton.setActionCommand("new conversation");
 		
 		// try with a JPanel
 		// TODO create separate class for this panel
 		JPanel panel = new JPanel();
-		panel.add(newConversationButton);
+	//	panel.add(newConversationButton);
 		
 		UiConfigData.init();
 		
 		// TODO load up existing data, if it's there
-		this.conversations_ = new ConversationsPanel();
-		
+		//this.conversations_ = new ConversationsPanel();
 
-		SessionManager.init(this.conversations_, username);
+		Strings.setLocalizationLanguage("epo");
 		
+		Conversation conversation = new Conversation();
 		
-		panel.add(this.conversations_);
+		SessionManager.init(conversation, username);
+		
+		panel.add(conversation);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setOpaque(true);
 		this.setContentPane(panel);
@@ -60,17 +62,8 @@ public class Window extends JFrame implements ActionListener, WindowListener {
 
 	public static void main(String[] args) {
 		Window window = new Window();
-		window.init(args[0]);
-	}
-	
-	
-	/*
-	 * Action Listener methods
-	 */
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("new conversation")) {
-			this.conversations_.createNewConversation();
-		}
+		//window.init(args[0]);
+		window.init("kechpaja");
 	}
 	
 	

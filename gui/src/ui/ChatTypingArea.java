@@ -53,8 +53,7 @@ public class ChatTypingArea extends JTextArea implements KeyListener {
 					Message message = new Message(
 											this.getText(), 
 											SessionManager.getCurrentUser(), 
-											this.chat_.getId(), 
-											this.chat_.getConversationId(), 
+											this.chat_.getId(),
 											toUsers);
 					this.setText("");
 					this.chat_.deliver(message);

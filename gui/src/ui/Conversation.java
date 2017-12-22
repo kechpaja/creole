@@ -20,18 +20,11 @@ public class Conversation extends JPanel {
 	 */
 	private static final long serialVersionUID = -6713163564873575070L;
 	
-	private static int count_ = 0;
-	private String title_;
-	private String id_;
-	
 	private ChatList chatList_;
 	private ChatArea chatArea_;
 	private UserList userList_;
 	
 	protected Conversation() {
-		this.title_ = Strings.getDefaultConversationTitle(count_++);
-		this.id_ = SessionManager.getCurrentUser() + "-" + System.currentTimeMillis() + "-" + Conversation.count_;
-		
 		this.chatList_ = new ChatList(this);
 		this.chatArea_ = new ChatArea(this);
 		this.userList_ = new UserList();
@@ -44,20 +37,6 @@ public class Conversation extends JPanel {
 		
 		this.setOpaque(true);
 		this.validate();
-	}
-	
-	protected Conversation(String id) {
-		this();
-		this.id_ = id; // TODO not elegant, but work on it later
-	}
-
-	
-	protected String getTitle() {
-		return this.title_;
-	}
-	
-	protected String getId() {
-		return this.id_;
 	}
 	
 	protected void redisplay() {
@@ -77,6 +56,10 @@ public class Conversation extends JPanel {
 		return this.userList_.getUsers();
 	}
 	
+	public void addUsers(Set<String> users) {
+		this.userList_.addUsers(users);
+	}
+	
 	protected List<String> getUsersSorted() {
 		List<String> users = new ArrayList<String>();
 		users.addAll(this.getUsers());
@@ -84,7 +67,7 @@ public class Conversation extends JPanel {
 		return users;
 	}
 	
-	protected void deliver(Message message) {
+	public void deliver(Message message) {
 		this.chatList_.deliver(message);
 	}
 }
