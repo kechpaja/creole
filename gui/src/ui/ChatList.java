@@ -19,13 +19,13 @@ public class ChatList extends JPanel {
 	 */
 	private static final long serialVersionUID = 8408968042626016488L;
 	
-	private Conversation parent_;
+	private ChatPanel parent_;
 	private Vector<Chat> chats_;
 	private Map<String, Chat> chatMap_;
 	private JPanel chatListPanel_;
 	private Chat prioritizedChat_;
 	
-	protected ChatList(Conversation conversation) {
+	protected ChatList(ChatPanel conversation) {
 		this.parent_ = conversation;
 		this.chats_ = new Vector<Chat>();
 		this.chatMap_ = new ConcurrentHashMap<String, Chat>();
@@ -82,7 +82,7 @@ public class ChatList extends JPanel {
 		this.validate();
 	}
 	
-	protected Conversation getConversation() {
+	protected ChatPanel getConversation() {
 		return this.parent_;
 	}
 	

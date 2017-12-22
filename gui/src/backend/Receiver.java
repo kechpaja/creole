@@ -3,18 +3,18 @@ package backend;
 import java.util.HashSet;
 import java.util.Set;
 
-import ui.Conversation;
+import ui.ChatPanel;
 
 public class Receiver implements Runnable {
 	
-	private Conversation chatPanel_;
+	private ChatPanel chatPanel_;
 	private NetworkUtilities networkUtilities_;
 	private String serverHost_;
 	private int serverPort_;
 	
 	private boolean shutdownFlag_;
 	
-	public Receiver(Conversation chatPanel, String serverHost, int serverPort) {
+	public Receiver(ChatPanel chatPanel, String serverHost, int serverPort) {
 		this.chatPanel_ = chatPanel;
 		this.networkUtilities_ = new NetworkUtilities();
 		this.serverHost_ = serverHost;

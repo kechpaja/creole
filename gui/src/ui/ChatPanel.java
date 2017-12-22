@@ -10,10 +10,8 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import backend.Message;
-import backend.SessionManager;
-import resources.Strings;
 
-public class Conversation extends JPanel {
+public class ChatPanel extends JPanel {
 	
 	/**
 	 * 
@@ -24,7 +22,7 @@ public class Conversation extends JPanel {
 	private ChatArea chatArea_;
 	private UserList userList_;
 	
-	protected Conversation() {
+	protected ChatPanel() {
 		this.chatList_ = new ChatList(this);
 		this.chatArea_ = new ChatArea(this);
 		this.userList_ = new UserList();

@@ -1,7 +1,6 @@
 package backend;
 
-import resources.Strings;
-import ui.Conversation;
+import ui.ChatPanel;
 
 public class SessionManager {
 	
@@ -24,12 +23,9 @@ public class SessionManager {
 		return SessionManager.sender_;
 	}
 	
-	public static void init(Conversation chatPanel, String username) {
-		// TODO set everything up. Take args if necessary. 
-		// Everything currenly here is just for testing. 
-		
+	public static void init(ChatPanel chatPanel, String username) {
 		SessionManager.currentUser_ = username;
-		SessionManager.sessionId_ = "sessionID";
+		SessionManager.sessionId_ = "sessionID"; // TODO get actual session ID
 		
 		SessionManager.sender_ = new Sender("localhost", 1234); // TODO get this info from somewhere
 		SessionManager.receiver_ = new Receiver(chatPanel, "localhost", 1234);
@@ -39,7 +35,6 @@ public class SessionManager {
 	}
 	
 	public static void shutdown() {
-		// TODO do stuff to shut down the program
 		SessionManager.sender_.shutdown();
 		SessionManager.receiver_.shutdown();
 	}

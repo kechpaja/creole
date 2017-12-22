@@ -13,12 +13,12 @@ public class ChatArea extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -5349808453529387897L;
-	private Conversation parent_;
-	private List<Chat> threadsDisplayed_;
+	private ChatPanel parent_;
+	private List<Chat> chatsDisplayed_;
 	
-	protected ChatArea(Conversation parent) {
+	protected ChatArea(ChatPanel parent) {
 		this.parent_ = parent;
-		this.threadsDisplayed_ = new ArrayList<Chat>();
+		this.chatsDisplayed_ = new ArrayList<Chat>();
 		
 		this.redisplay();
 		this.setOpaque(true);
@@ -41,7 +41,7 @@ public class ChatArea extends JPanel {
 			}
 			
 			Chat thread = it.next();
-			if (this.threadsDisplayed_.contains(thread)) {
+			if (this.chatsDisplayed_.contains(thread)) {
 				chatsToLeaveBe.add(thread);
 			} else {
 				chatsToAdd.add(thread);
@@ -65,10 +65,10 @@ public class ChatArea extends JPanel {
 				break;
 			}
 			
-			if (i >= this.threadsDisplayed_.size()) {
-				this.threadsDisplayed_.add(chatsToAdd.remove(0));
-			} else if (!chatsToLeaveBe.contains(this.threadsDisplayed_.get(i))) {
-				this.threadsDisplayed_.set(i, chatsToAdd.remove(0));
+			if (i >= this.chatsDisplayed_.size()) {
+				this.chatsDisplayed_.add(chatsToAdd.remove(0));
+			} else if (!chatsToLeaveBe.contains(this.chatsDisplayed_.get(i))) {
+				this.chatsDisplayed_.set(i, chatsToAdd.remove(0));
 			}
 		}
 		
@@ -79,13 +79,13 @@ public class ChatArea extends JPanel {
 			return;
 		}
 		
-		int numRows = (this.threadsDisplayed_.size() - 1)/numCols + 1;
+		int numRows = (this.chatsDisplayed_.size() - 1)/numCols + 1;
 		if (numRows < 1) {
 			numRows = 1;
 		}
 		this.setLayout(new GridLayout(numRows, numCols));
 		
-		for (Chat chat : this.threadsDisplayed_) {
+		for (Chat chat : this.chatsDisplayed_) {
 			this.add(chat);
 		}
 		

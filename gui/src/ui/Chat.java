@@ -45,8 +45,6 @@ public class Chat extends JPanel implements MouseListener {
 		this.usersInChat_ = new HashSet<String>();
 		this.usersInChat_.add(SessionManager.getCurrentUser());
 		
-		// TODO change border color based on whether user has focused window since new messages arrived. 
-		
 		this.setLayout(new BorderLayout());
 		
 		this.header_ = new ChatHeader(this);
@@ -93,7 +91,7 @@ public class Chat extends JPanel implements MouseListener {
 		this.id_ = id;
 	}
 	
-	protected Conversation getConversation() {
+	protected ChatPanel getConversation() {
 		return this.chatList_.getConversation();
 	}
 	

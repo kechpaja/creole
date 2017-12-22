@@ -17,6 +17,8 @@ public class UserList extends JPanel {
 	public UserList() {
 		this.users_ = new HashSet<String>();
 		
+		// TODO create actual visible list of users
+		
 		this.setVisible(true);
 		this.setOpaque(true);
 		this.validate();

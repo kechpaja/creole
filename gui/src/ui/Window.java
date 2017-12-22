@@ -1,14 +1,9 @@
 package ui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import backend.SessionManager;
 import resources.Strings;
@@ -29,31 +24,17 @@ public class Window extends JFrame implements WindowListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.addWindowListener(this);
 		
-		// TODO create separate class for this button, perhaps
-		//JButton newConversationButton = new JButton(Strings.getNewConversationButtonText());
-		//newConversationButton.addActionListener(this);
-		//newConversationButton.setActionCommand("new conversation");
-		
-		// try with a JPanel
-		// TODO create separate class for this panel
-		JPanel panel = new JPanel();
-	//	panel.add(newConversationButton);
-		
 		UiConfigData.init();
 		
 		// TODO load up existing data, if it's there
-		//this.conversations_ = new ConversationsPanel();
-
+		// Put this loc call into UI config data class
 		Strings.setLocalizationLanguage("epo");
 		
-		Conversation conversation = new Conversation();
+		ChatPanel chatPanel = new ChatPanel();
 		
-		SessionManager.init(conversation, username);
+		SessionManager.init(chatPanel, username);
 		
-		panel.add(conversation);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setOpaque(true);
-		this.setContentPane(panel);
+		this.setContentPane(chatPanel);
 		
 		this.pack();
 		this.setVisible(true);
@@ -62,8 +43,7 @@ public class Window extends JFrame implements WindowListener {
 
 	public static void main(String[] args) {
 		Window window = new Window();
-		//window.init(args[0]);
-		window.init("kechpaja");
+		window.init(args[0]);
 	}
 	
 	
