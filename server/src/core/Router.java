@@ -17,6 +17,7 @@ public class Router {
 		userJoinedMessage += "User\\s\"" + user + "\"\\sjoined\\sthe\\sserver!:"; // TODO localize this string! Possibly on client. 
 		userJoinedMessage += String.join(":", this.data_.keySet());
 			
+		// TODO personalize message for each user?
 		for (Vector<String> messageList : this.data_.values()) {
 			messageList.add(userJoinedMessage);
 		}
