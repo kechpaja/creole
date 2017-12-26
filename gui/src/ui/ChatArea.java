@@ -87,6 +87,8 @@ public class ChatArea extends JPanel {
 		
 		for (Chat chat : this.chatsDisplayed_) {
 			this.add(chat);
+			
+			chat.redisplay();
 		}
 		
 		this.revalidate();
